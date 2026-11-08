@@ -119,21 +119,23 @@
     if (!svg) return;
     var W = 820, H = 600, cy = 300;
     svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-    var MODELS = ["Claude Sonnet 5.5", "Gemini 3.8 Flash", "Muse Spark 1.3", "DeepSeek V4 Pro",
-                  "DeepSeek V4.1 Flash", "GLM 5.3 Flash", "gpt-oss-120b", "gpt-oss-20b"];
-    // The three requests from the walkthrough video and the model the router picked for each.
+    // Model families, top four frontier, bottom four fast and low-cost. Illustrative only.
+    var MODELS = ["Claude", "GPT", "Gemini", "Grok", "DeepSeek", "Llama", "Mistral", "Qwen"];
     var CASES = [
-      { p1: "Rewrite this section", p2: "in a formal tone", task: "writing · legal", m: 4 },
-      { p1: "Calculate the late-", p2: "payment interest", task: "maths · arithmetic", m: 6 },
-      { p1: "Analyse which laws", p2: "were breached", task: "knowledge · legal", m: 0 }
+      { p1: "What\u2019s 17% of", p2: "2,340?", task: "maths \u00b7 easy", m: 5 },
+      { p1: "Find the risks in", p2: "this contract", task: "legal \u00b7 hard", m: 0 },
+      { p1: "Write a SQL query", p2: "for monthly churn", task: "coding", m: 4 },
+      { p1: "Summarise this", p2: "meeting transcript", task: "writing \u00b7 summary", m: 2 }
     ];
     var hubX = 236, pillX = 420, pillW = 178, pillH = 32, ansX = 782, font = "DM Sans, sans-serif";
     var g = el("g", {}, svg);
-    var cap = el("text", { x: pillX + pillW / 2, y: 30, "text-anchor": "middle", fill: "#8FA597", "font-size": 12, "font-weight": 700, "letter-spacing": "2", "font-family": font }, g);
-    cap.textContent = "8 AI MODELS";
+    [["FRONTIER MODELS", 26], ["FAST, LOW-COST MODELS", 330]].forEach(function (c) {
+      var t = el("text", { x: pillX + pillW / 2, y: c[1], "text-anchor": "middle", fill: "#8FA597", "font-size": 11.5, "font-weight": 700, "letter-spacing": "1.8", "font-family": font }, g);
+      t.textContent = c[0];
+    });
     var paths = [], pills = [], labels = [], ys = [];
     for (var i = 0; i < MODELS.length; i++) {
-      var y = 66 + i * 67; ys.push(y);
+      var y = (i < 4 ? 60 + i * 60 : 364 + (i - 4) * 60); ys.push(y);
       var d = "M" + (hubX + 28) + "," + cy + " C" + (hubX + 110) + "," + cy + " " + (pillX - 80) + "," + y + " " + pillX + "," + y +
               " L" + (pillX + pillW) + "," + y +
               " C" + (pillX + pillW + 80) + "," + y + " " + (ansX - 100) + "," + cy + " " + (ansX - 16) + "," + cy;
