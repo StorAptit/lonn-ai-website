@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lönn AI — every prompt, routed to the cheapest model that’s good enough</title>
+<meta name="description" content="Lönn AI is an LLM routing API. Swap one API key and every request goes to the model that is good enough for the task, at the lowest cost.">
+<meta property="og:title" content="Lönn AI">
+<meta property="og:description" content="Every prompt, routed to the cheapest model that’s good enough.">
+<meta property="og:image" content="assets/img/routing-poster.jpg">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="Lönn AI home"><img src="assets/img/logo-light.png" alt="Lönn AI"></a>
+    <nav>
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="prestudy.html">Pre-study</a></li>
+        <li><a class="btn btn-primary btn-s" href="#access">Request access</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero dark">
+  <div class="hero-glow"></div>
+  <div class="hero-art" aria-hidden="true"><svg id="hero-routes"></svg></div>
+  <div class="wrap">
+    <span class="eyebrow reveal">LLM routing API</span>
+    <h1 class="h-xl reveal" style="--d:.08s">Every prompt, routed to the <span class="g">cheapest model</span> that’s good enough.</h1>
+    <p class="lead reveal" style="--d:.16s">Swap one API key. Lönn reads each request and sends it to the model that handles it best, at the lowest cost. One setting lets you balance cost against quality.</p>
+    <div class="ctas reveal" style="--d:.24s">
+      <a class="btn btn-primary" href="#access">Request access
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+      <a class="btn btn-ghost" href="#video">
+        <svg viewBox="0 0 20 20" fill="currentColor"><path d="M6 4.5v11l9-5.5z"/></svg> Watch how it works</a>
+    </div>
+    <div class="hero-stats reveal" style="--d:.34s">
+      <div><div class="n" data-count="-79" data-suf="%">−79%</div><div class="l">cost compared with always using Claude Sonnet 5.5</div></div>
+      <div><div class="n" data-count="97" data-suf="%">97%</div><div class="l">of Sonnet’s accuracy at that setting</div></div>
+      <div><div class="n" data-count="34" data-suf=" ms">34 ms</div><div class="l">to classify a prompt</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue" aria-hidden="true">Scroll<span></span></div>
+</section>
+
+<!-- ============ BACKGROUND / PROBLEM ============ -->
+<section class="white pad">
+  <div class="wrap">
+    <span class="eyebrow reveal">Why it matters</span>
+    <h2 class="h-l reveal" style="max-width:820px">AI now runs through every part of the business, and every token is billed.</h2>
+    <p class="lead muted reveal" style="margin-top:24px">Companies call model APIs from their products, internal tools and agents. Agents and reasoning models multiply the tokens, and a new model comes out almost every month. The question of which model to use never stays answered for long.</p>
+  </div>
+</section>
+
+<section class="split">
+  <div class="light">
+    <span class="eyebrow reveal">The problem, part 1</span>
+    <div class="who reveal">The developer</div>
+    <h3 class="reveal" style="--d:.08s">Wants the best answer for every task.</h3>
+    <p class="foot reveal" style="--d:.16s">And an integration small enough that it doesn’t change how the app behaves.</p>
+  </div>
+  <div class="dark">
+    <span class="eyebrow reveal">The problem, part 2</span>
+    <div class="who reveal">The CFO</div>
+    <h3 class="reveal" style="--d:.08s">Wants spend that is lower, predictable and traceable.</h3>
+    <p class="foot reveal" style="--d:.16s">Today: one total bill per provider, spread across separate portals, with no idea which feature or team caused it.</p>
+  </div>
+</section>
+
+<section class="dark pad">
+  <div class="wrap trade">
+    <div>
+      <span class="eyebrow reveal">The trade-off</span>
+      <h2 class="h-l reveal">One model for everything forces a trade, on every single request.</h2>
+      <p class="lead muted reveal" style="margin-top:24px">Choose the strong model and you overpay on easy prompts. Choose the cheap one and the hard prompts suffer. Nobody can make that choice by hand, per request.</p>
+    </div>
+    <div data-observe>
+      <div class="big" data-count="26" data-suf="×">26×</div>
+      <p class="muted" style="margin-top:14px;max-width:420px">What Claude Sonnet 5.5 costs compared with gpt-oss-120b on the same 690 prompts, for 92% versus 82% correct.</p>
+      <div class="versus">
+        <div class="vs-row"><div class="top"><b>Cost · Claude Sonnet 5.5</b><span>$7.58</span></div><div class="bar"><i style="--w:100%"></i></div></div>
+        <div class="vs-row"><div class="top"><b>Cost · gpt-oss-120b</b><span>$0.29</span></div><div class="bar grey"><i style="--w:3.8%"></i></div></div>
+        <div class="vs-row"><div class="top"><b>Correct · Claude Sonnet 5.5</b><span>92%</span></div><div class="bar"><i style="--w:92%"></i></div></div>
+        <div class="vs-row"><div class="top"><b>Correct · gpt-oss-120b</b><span>82%</span></div><div class="bar grey"><i style="--w:82%"></i></div></div>
+      </div>
+      <p class="source">Benchmark of 690 prompts, correctness excluding business writing. Source: Lönn pre-study, benchmark model table.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="light pad" id="how" style="padding-bottom:40px">
+  <div class="wrap">
+    <span class="eyebrow reveal">How it works</span>
+    <h2 class="h-l reveal" style="max-width:820px"><span class="g-deep">Lönn</span> sends every task to the model that’s good enough, at the lowest cost.</h2>
+    <p class="lead muted reveal" style="margin-top:22px">Models are strong at different things. Send each task to the model that handles it best, and a router beats any single model. Here is what happens to one request.</p>
+
+    <div class="how">
+      <div class="how-visual">
+        <svg class="dg" data-step="0" viewBox="0 0 580 540" aria-label="Diagram of the Lönn router: classify, score, route, check">
+          <!-- wires -->
+          <path class="wire" d="M135 80 V110"/>
+          <path class="wire" d="M135 230 V260"/>
+          <g class="fan">
+            <path class="wire" d="M250 305 C285 305 285 32 320 32"/>
+            <path class="wire" d="M250 305 C285 305 285 90 320 90"/>
+            <path class="wire" d="M250 305 C285 305 285 148 320 148"/>
+            <path class="wire" d="M250 305 C285 305 285 206 320 206"/>
+            <path class="wire" d="M250 305 C285 305 285 264 320 264"/>
+            <path class="wire" d="M250 305 C285 305 285 322 320 322"/>
+            <path class="wire" d="M250 305 C285 305 285 380 320 380"/>
+            <path class="wire" d="M250 305 C285 305 285 438 320 438"/>
+          </g>
+          <path class="wire w-win" d="M250 305 C285 305 285 380 320 380"/>
+          <path class="wire w-out" d="M320 392 C290 392 285 425 250 425"/>
+          <path class="wire w-out" d="M135 470 V490"/>
+
+          <!-- request -->
+          <rect class="box" x="20" y="10" width="230" height="70" rx="12"/>
+          <text class="sub" x="38" y="36">YOUR REQUEST</text>
+          <text class="lbl" x="38" y="60" style="font-weight:500;font-size:13.5px">“Calculate the late-payment…”</text>
+
+          <!-- classify -->
+          <rect class="box b-classify" x="20" y="110" width="230" height="120" rx="12"/>
+          <text class="lbl" x="38" y="138">1 · Classify</text>
+          <g class="tags">
+            <text class="sub" x="38" y="164">Maths · arithmetic</text><rect x="150" y="155" width="80" height="10" rx="5" fill="#EEF3EF"/><rect x="150" y="155" width="70" height="10" rx="5" fill="#00C060"/>
+            <text class="sub" x="38" y="188">Maths · algebra</text><rect x="150" y="179" width="80" height="10" rx="5" fill="#EEF3EF"/><rect x="150" y="179" width="9" height="10" rx="5" fill="#8FA597"/>
+            <text class="sub" x="38" y="212">Other types</text><rect x="150" y="203" width="80" height="10" rx="5" fill="#EEF3EF"/><rect x="150" y="203" width="5" height="10" rx="3" fill="#8FA597"/>
+          </g>
+
+          <!-- score -->
+          <rect class="box b-score" x="20" y="260" width="230" height="90" rx="12"/>
+          <text class="lbl" x="38" y="290">2 · Score</text>
+          <text class="sub" x="38" y="314">accuracy − λ × cost,</text>
+          <text class="sub" x="38" y="332">for every model</text>
+
+          <!-- models -->
+          <rect class="box b-route" x="306" y="2" width="266" height="468" rx="14" style="fill:#FAFCFA"/>
+          <g class="mdl"><rect x="320" y="12" width="240" height="40" rx="9"/><text x="334" y="37">Claude Sonnet 5.5</text><rect class="scorebg" x="470" y="27" width="76" height="8" rx="4"/><rect class="score" x="470" y="27" height="8" rx="4" style="--s:52px"/></g>
+          <g class="mdl"><rect x="320" y="70" width="240" height="40" rx="9"/><text x="334" y="95">Gemini 3.8 Flash</text><rect class="scorebg" x="470" y="85" width="76" height="8" rx="4"/><rect class="score" x="470" y="85" height="8" rx="4" style="--s:58px"/></g>
+          <g class="mdl"><rect x="320" y="128" width="240" height="40" rx="9"/><text x="334" y="153">Muse Spark 1.3</text><rect class="scorebg" x="470" y="143" width="76" height="8" rx="4"/><rect class="score" x="470" y="143" height="8" rx="4" style="--s:44px"/></g>
+          <g class="mdl"><rect x="320" y="186" width="240" height="40" rx="9"/><text x="334" y="211">DeepSeek V4 Pro</text><rect class="scorebg" x="470" y="201" width="76" height="8" rx="4"/><rect class="score" x="470" y="201" height="8" rx="4" style="--s:50px"/></g>
+          <g class="mdl"><rect x="320" y="244" width="240" height="40" rx="9"/><text x="334" y="269">DeepSeek V4.1 Flash</text><rect class="scorebg" x="470" y="259" width="76" height="8" rx="4"/><rect class="score" x="470" y="259" height="8" rx="4" style="--s:66px"/></g>
+          <g class="mdl"><rect x="320" y="302" width="240" height="40" rx="9"/><text x="334" y="327">GLM 5.3 Flash</text><rect class="scorebg" x="470" y="317" width="76" height="8" rx="4"/><rect class="score" x="470" y="317" height="8" rx="4" style="--s:55px"/></g>
+          <g class="mdl win"><rect x="320" y="360" width="240" height="40" rx="9"/><text x="334" y="385" style="font-weight:700">gpt-oss-120b</text><rect class="scorebg" x="470" y="375" width="76" height="8" rx="4"/><rect class="score" x="470" y="375" height="8" rx="4" style="--s:72px"/></g>
+          <g class="mdl"><rect x="320" y="418" width="240" height="40" rx="9"/><text x="334" y="443">gpt-oss-20b</text><rect class="scorebg" x="470" y="433" width="76" height="8" rx="4"/><rect class="score" x="470" y="433" height="8" rx="4" style="--s:62px"/></g>
+          <text class="sub" x="439" y="490" text-anchor="middle">3 · Route to the best score</text>
+
+          <!-- check -->
+          <rect class="box b-check" x="20" y="380" width="230" height="90" rx="12"/>
+          <text class="lbl" x="38" y="410">4 · Check</text>
+          <text class="sub" x="38" y="434">Empty, cut off or failing?</text>
+          <text class="sub" x="38" y="452">Escalate once.</text>
+          <g class="check"><circle cx="222" cy="405" r="13" fill="#00C060"/><path d="M215.5 405.5l4.5 4.5 7.5-8" fill="none" stroke="#0B2E14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></g>
+
+          <!-- answer -->
+          <rect x="20" y="490" width="230" height="44" rx="22" fill="#0B2E14"/>
+          <text x="135" y="517" text-anchor="middle" style="font:600 14px 'DM Sans',sans-serif;fill:#EAF1EC">Answer, in the usual format</text>
+        </svg>
+      </div>
+
+      <div class="how-steps">
+        <div class="step" data-step="1">
+          <div class="num">STEP 1</div>
+          <h3>Classify</h3>
+          <p>A small, fast classifier reads the prompt and estimates how likely it is to be each of 15 task types, from arithmetic to legal writing.</p>
+          <span class="chip">About 34 ms per prompt, on a CPU</span>
+        </div>
+        <div class="step" data-step="2">
+          <div class="num">STEP 2</div>
+          <h3>Score</h3>
+          <p>Every model gets a score based on its measured accuracy and its real billed cost on that kind of task. The choice is based on measured results, not list prices.</p>
+          <div class="formula">score(m) = Σ p(t)·accuracy(t,m) − λ · Σ p(t)·cost(t,m)</div>
+        </div>
+        <div class="step" data-step="3">
+          <div class="num">STEP 3</div>
+          <h3>Route</h3>
+          <p>The request goes to the best-scoring of eight models. λ is your dial: lower it for quality-critical features, raise it for simple, high-volume tasks.</p>
+          <span class="chip">8 models in a carefully chosen pool</span>
+        </div>
+        <div class="step" data-step="4">
+          <div class="num">STEP 4</div>
+          <h3>Check</h3>
+          <p>If the answer comes back empty, cut off, or fails a code example in the prompt, Lönn escalates once to the next model. Then the answer is returned in the format your app already expects.</p>
+          <span class="chip">Up to +1.9 points at the same budget</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEO 1: ROUTING ============ -->
+<section class="dark pad" id="video">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow reveal">Walkthrough</span>
+      <h2 class="h-l reveal">Watch a request get routed</h2>
+      <p class="lead muted reveal" style="margin-top:20px">Three example requests from a legal-AI customer, step by step: a formal rewrite, an interest calculation and a legal analysis.</p>
+    </div>
+    <div class="video-frame reveal">
+      <video preload="metadata" playsinline poster="assets/img/routing-poster.jpg">
+        <source src="videos/routing.mp4" type="video/mp4" onerror="this.closest('.video-frame').classList.add('missing')">
+      </video>
+      <button class="play" aria-label="Play the routing video"><span><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span></button>
+      <div class="video-missing"><div>Add the routing video as <code>videos/routing.mp4</code></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTEGRATE ============ -->
+<section class="white pad">
+  <div class="wrap integrate">
+    <div>
+      <span class="eyebrow reveal">Integration</span>
+      <h2 class="h-l reveal">Swap one key and one domain. Change nothing else.</h2>
+      <ul class="ticks reveal">
+        <li>Use a Lönn API key instead of your provider key, through the API or the Python SDK.</li>
+        <li>Lönn forwards each request to the provider that serves the chosen model and returns the answer.</li>
+        <li>Set the cost-quality balance once, or per call for features that need consistent quality.</li>
+      </ul>
+    </div>
+    <div class="reveal" style="--d:.1s">
+      <div class="code" role="img" aria-label="Code example: replacing the provider base URL and API key with Lönn's">
+        <div class="code-head"><i></i><i></i><i></i></div>
+<span class="k">client</span> = OpenAI(<br>
+<span class="del">-    base_url="https://api.openai.com/v1",</span>
+<span class="del">-    api_key=os.environ["OPENAI_API_KEY"],</span>
+<span class="add">+    base_url="https://api.lonnai.com/v1",</span>
+<span class="add">+    api_key=os.environ["LONN_API_KEY"],</span>
+)<br>
+<span class="c"># that’s it: every request is now routed</span>
+      </div>
+      <p class="source">Illustrative example of the intended integration.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="light pad" id="results">
+  <div class="wrap">
+    <span class="eyebrow reveal">Results</span>
+    <h2 class="h-l reveal" style="max-width:860px"><span class="g-deep">Lönn</span> beats Sonnet at about half the cost.</h2>
+    <p class="lead muted reveal" style="margin-top:22px">By combining each model’s strengths, the router does better than any single model in the pool. All 8 models answered all 690 benchmark prompts in maths, coding, knowledge, instruction following and business writing. Each answer was graded and its real cost billed.</p>
+
+    <div class="results-grid">
+      <div class="chart-card reveal">
+        <div class="chart" id="chart" data-observe></div>
+        <div class="legend">
+          <span><i style="background:#00C060"></i>Lönn Router, one point per λ</span>
+          <span><i style="background:#A9B8AE"></i>Single models</span>
+          <span><i style="background:#0B2E14"></i>Claude Sonnet 5.5</span>
+        </div>
+      </div>
+      <div class="dial reveal" style="--d:.12s">
+        <span class="eyebrow">Try the dial</span>
+        <h3>Set λ, your cost-quality balance</h3>
+        <p class="muted">Low λ favours quality. High λ favours cost. Drag to see the measured results.</p>
+        <input type="range" id="lambda" min="0" max="10" step="1" value="2" aria-label="Lambda setting">
+        <div class="ends"><span>Quality first · λ 0</span><span>Cost first · λ 100</span></div>
+        <div class="lam">λ = <b id="r-lam">20</b></div>
+        <div class="readout">
+          <div><div class="v g" id="r-acc">85.8%</div><div class="k">correct answers</div></div>
+          <div><div class="v" id="r-cost">$1.58</div><div class="k">for all 690 prompts</div></div>
+          <div class="wide"><div class="v" id="r-vs" style="font-size:20px">−2.3 points, −79% cost</div><div class="k">compared with always using Claude Sonnet 5.5 (88.1%, $7.58)</div></div>
+          <div class="wide"><div class="v" id="r-esc" style="font-size:20px">8% of requests</div><div class="k">escalated by the answer check</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="reveal"><div class="n" data-count="-79" data-suf="%">−79%</div><div class="l">cost compared with always using Sonnet 5.5, at λ = 20</div></div>
+      <div class="reveal" style="--d:.08s"><div class="n" data-count="97" data-suf="%">97%</div><div class="l">of Sonnet’s accuracy at that setting</div></div>
+      <div class="reveal" style="--d:.16s"><div class="n">½</div><div class="l">Sonnet’s cost at λ = 10, with higher accuracy (89.6% vs 88.1%)</div></div>
+      <div class="reveal" style="--d:.24s"><div class="n" data-count="15">15</div><div class="l">task types the classifier tells apart</div></div>
+    </div>
+    <p class="source">Source: Lönn pre-study §7.4 and Appendix A4. 690 prompts, 8 models, five-fold cross-validation over ten random partitions. Router and Sonnet values are exact; the other single-model points are read from the report figure. Results apply to the benchmark; real customer traffic may differ.</p>
+  </div>
+</section>
+
+<!-- ============ DASHBOARD ============ -->
+<section class="dark pad" id="dashboard">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow reveal">The Lönn AI Dashboard</span>
+      <h2 class="h-l reveal">But what about cost traceability?</h2>
+      <p class="lead muted reveal" style="margin-top:20px">Every request, the model it went to and what it cost, by team, task and model.</p>
+      <div class="rule reveal"></div>
+    </div>
+    <div class="video-frame reveal">
+      <video preload="metadata" playsinline>
+        <source src="videos/dashboard.mp4" type="video/mp4" onerror="this.closest('.video-frame').classList.add('missing')">
+      </video>
+      <button class="play" aria-label="Play the dashboard video"><span><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span></button>
+      <div class="video-missing"><div>Dashboard video coming soon.<br><small>Add it as <code>videos/dashboard.mp4</code></small></div></div>
+    </div>
+    <div class="features">
+      <div class="feature reveal">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></div>
+        <h4>Usage, broken down</h4>
+        <p>Spend by team, task type and model, instead of one total bill per provider.</p>
+      </div>
+      <div class="feature reveal" style="--d:.08s">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
+        <h4>Forecasts and savings</h4>
+        <p>Spending forecasts, and estimated savings after service fees compared with a frontier model.</p>
+      </div>
+      <div class="feature reveal" style="--d:.16s">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <h4>Data-handling policies</h4>
+        <p>Saved settings for processing location, retention and training use, including zero data retention.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="white pad" id="pricing">
+  <div class="wrap">
+    <span class="eyebrow reveal">Pricing</span>
+    <h2 class="h-l reveal" style="max-width:820px">We earn money when you save money.</h2>
+    <div class="pricing">
+      <div data-observe>
+        <div class="big" style="color:var(--signal-deep)" data-count="20" data-suf="¢">20¢</div>
+        <p class="lead" style="margin-top:18px">of every dollar you save with Lönn. The other 80¢ stays with you, so our interests always line up.</p>
+        <div class="split-bar"><div class="a"></div><div class="b"></div></div>
+        <div class="split-legend"><span>You keep 80¢</span><b>Lönn 20¢</b></div>
+      </div>
+      <div data-observe>
+        <div class="big" style="color:var(--ink)" data-count="2">2</div>
+        <p class="lead" style="margin-top:18px"><b>standard-sized customers, and we break even.</b></p>
+        <p class="muted" style="margin-top:12px;max-width:460px">The router saves so much that a small share already covers our costs. Pilot partners pay only the underlying model costs, with no service fee.</p>
+        <p class="source">Prepaid credits. Break-even figure is preliminary (pre-study §7.6).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section class="light pad-s">
+  <div class="wrap">
+    <span class="eyebrow reveal">Roadmap</span>
+    <h2 class="h-m reveal">From prototype to a product anyone can use</h2>
+    <div class="road" data-observe>
+      <div class="fill"></div>
+      <div class="st" style="--d:.1s"><h4>Find partners</h4><p>A few AI-heavy companies that rely on LLM APIs in their products.</p></div>
+      <div class="st" style="--d:.45s"><h4>Run pilots</h4><p>Start in shadow mode, then gradually take over real traffic.</p></div>
+      <div class="st" style="--d:.8s"><h4>Prepare launch</h4><p>Build what the pilots taught us into the product.</p></div>
+      <div class="st" style="--d:1.15s"><h4>Go live</h4><p>Any company can create an account and get an API key.</p></div>
+      <div class="st" style="--d:1.5s"><h4>Grow</h4><p>Use real usage data to keep improving the router.</p></div>
+    </div>
+    <div style="margin-top:56px" class="reveal"><a class="btn btn-ghost" href="prestudy.html">Read the pre-study summary
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="dark pad final" id="access">
+  <div class="final-art" aria-hidden="true"><svg id="final-routes" preserveAspectRatio="xMidYMid slice"></svg></div>
+  <div class="wrap center">
+    <span class="eyebrow reveal">Get started</span>
+    <h2 class="h-xl reveal">Stop choosing models. <span class="g">Let Lönn do it.</span></h2>
+    <p class="lead muted reveal" style="margin-top:24px">We’re looking for pilot partners that build on LLM APIs. Tell us a little about your product and we’ll be in touch.</p>
+    <div class="ctas reveal">
+      <a class="btn btn-primary" href="mailto:hello@lonnai.com?subject=L%C3%B6nn%20AI%20%E2%80%94%20request%20access">Request access</a>
+      <a class="btn btn-ghost" href="prestudy.html">Read the pre-study</a>
+    </div>
+    <p class="mail-note reveal">hello@lonnai.com</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="row">
+      <div>
+        <img src="assets/img/logo-light.png" alt="Lönn AI">
+        <p style="max-width:320px">Every prompt, routed to the cheapest model that’s good enough.</p>
+      </div>
+      <div>
+        <h5>Site</h5>
+        <ul><li><a href="#how">How it works</a></li><li><a href="#results">Results</a></li><li><a href="#dashboard">Dashboard</a></li><li><a href="prestudy.html">Pre-study</a></li></ul>
+      </div>
+      <div>
+        <h5>Team</h5>
+        <ul>
+          <li><a href="mailto:jbrismar@kth.se">jbrismar@kth.se</a></li>
+          <li><a href="mailto:erikmall@kth.se">erikmall@kth.se</a></li>
+          <li><a href="mailto:spiik@kth.se">spiik@kth.se</a></li>
+          <li><a href="mailto:noaw@kth.se">noaw@kth.se</a></li>
+          <li><a href="mailto:hestra@kth.se">hestra@kth.se</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fine"><span>© 2026 Lönn AI · A student project at KTH</span><span>Benchmark results from the Lönn pre-study. Not real customer traffic.</span></div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
