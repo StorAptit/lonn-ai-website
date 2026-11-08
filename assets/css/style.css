@@ -432,3 +432,6 @@ h1,h2,h3{overflow-wrap:break-word}
 .val-trade{margin-top:90px;padding-top:60px;border-top:1px solid var(--line-dark)}
 @media (max-width:980px){.setup{grid-template-columns:1fr 1fr}.tiers{grid-template-columns:1fr}}
 @media (max-width:560px){.setup{grid-template-columns:1fr}.hero-points{gap:14px;flex-direction:column}}
+.bench-note{margin-top:56px;padding:28px 30px;border:1px solid var(--line);border-radius:16px;background:#fff;display:flex;gap:30px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.bench-note p{max-width:640px;color:var(--muted);font-size:16.5px}
+.bench-note .btn{flex:none}

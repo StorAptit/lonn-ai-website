@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202611082101">
+<link rel="stylesheet" href="assets/css/style.css?v=202611082108">
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
@@ -97,7 +97,6 @@
         <div class="tier reveal"><span class="eyebrow">Frontier models</span><p>Best on hard reasoning, code and analysis. Priced for it.</p></div>
         <div class="tier reveal" style="--d:.1s"><span class="eyebrow">Fast, low-cost models</span><p>Often just as good on everyday tasks, for a fraction of the price.</p></div>
       </div>
-      <p class="source">Source: Lönn pre-study, background (§1.1).</p>
     </div>
   </div>
 </section>
@@ -314,7 +313,7 @@
           <div class="vs-row"><div class="top"><b>Correct · Claude Sonnet 5.5</b><span>92%</span></div><div class="bar"><i style="--w:92%"></i></div></div>
           <div class="vs-row"><div class="top"><b>Correct · gpt-oss-120b</b><span>82%</span></div><div class="bar grey"><i style="--w:82%"></i></div></div>
         </div>
-        <p class="source">All 690 prompts; correctness excluding business writing. Source: Lönn pre-study, benchmark model table.</p>
+        <p class="source">Accuracy on all 690 prompts, excluding business writing.</p>
       </div>
     </div>
   </div>
@@ -358,7 +357,11 @@
       <div class="reveal" style="--d:.16s"><div class="n">½</div><div class="l">Sonnet’s cost at λ = 10, with higher accuracy (89.6% vs 88.1%)</div></div>
       <div class="reveal" style="--d:.24s"><div class="n" data-count="15">15</div><div class="l">task types the classifier tells apart</div></div>
     </div>
-    <p class="source">Source: Lönn pre-study §7.4 and Appendix A4. 690 prompts, 8 models, five-fold cross-validation over ten random partitions. Router and Sonnet values are exact; the other single-model points are read from the report figure. Results apply to the benchmark; real customer traffic may differ.</p>
+    <div class="bench-note reveal">
+      <p>These results come from a benchmark, not from real customer traffic, so the next step is pilots with real users. The full method, the earlier iterations and the roadmap are in the pre-study.</p>
+      <a class="btn btn-ghost" href="prestudy.html">Read the pre-study summary
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+    </div>
   </div>
 </section>
 
@@ -377,14 +380,6 @@
       <button class="play" aria-label="Play the routing video"><span><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></span></button>
       <div class="video-missing"><div>Add the routing video as <code>videos/routing.mp4</code></div></div>
     </div>
-  </div>
-</section>
-
-<section class="white pad-s">
-  <div class="wrap center">
-    <p class="lead muted reveal" style="margin:0 auto">These results come from a benchmark, not from real customer traffic, so the next step is pilots with real users. The full method, the earlier iterations and the roadmap are in the pre-study.</p>
-    <div style="margin-top:30px" class="reveal"><a class="btn btn-ghost" href="prestudy.html">Read the pre-study summary
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></div>
   </div>
 </section>
 
@@ -429,6 +424,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202611082101"></script>
+<script src="assets/js/main.js?v=202611082108"></script>
 </body>
 </html>
