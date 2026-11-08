@@ -198,8 +198,8 @@
         <div class="step" data-step="4">
           <div class="num">STEP 4</div>
           <h3>Check</h3>
-          <p>If the answer comes back empty, cut off, or fails a code example in the prompt, Lönn escalates once to the next model. Then the answer is returned in the format your app already expects.</p>
-          <span class="chip">Up to +1.9 points at the same budget</span>
+          <p>If the answer comes back empty, cut off, or fails a code example given in the prompt, it would count as wrong. Lönn sends the request once more, to the next-best model, so a broken answer gets a second chance. Then the answer is returned in the format your app already expects.</p>
+          <span class="chip">83.7% → 85.8% correct at λ = 20</span>
         </div>
       </div>
     </div>
@@ -343,30 +343,12 @@
         <div class="split-legend"><span>You keep 80¢</span><b>Lönn 20¢</b></div>
       </div>
       <div data-observe>
-        <div class="big" style="color:var(--ink)" data-count="2">2</div>
-        <p class="lead" style="margin-top:18px"><b>standard-sized customers, and we break even.</b></p>
-        <p class="muted" style="margin-top:12px;max-width:460px">The router saves so much that a small share already covers our costs. Pilot partners pay only the underlying model costs, with no service fee.</p>
-        <p class="source">Prepaid credits. Break-even figure is preliminary (pre-study §7.6).</p>
+        <div class="big" style="color:var(--ink)" data-count="0" data-suf="¢">0¢</div>
+        <p class="lead" style="margin-top:18px"><b>service fee for pilot partners.</b></p>
+        <p class="muted" style="margin-top:12px;max-width:460px">During the pilot you pay only the underlying model costs. The router starts in shadow mode, recording what it would have chosen, before it gradually takes over your real traffic.</p>
+        <p class="source">After the pilot: the standard 20% of savings, through prepaid credits.</p>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============ ROADMAP ============ -->
-<section class="light pad-s">
-  <div class="wrap">
-    <span class="eyebrow reveal">Roadmap</span>
-    <h2 class="h-m reveal">From prototype to a product anyone can use</h2>
-    <div class="road" data-observe>
-      <div class="fill"></div>
-      <div class="st" style="--d:.1s"><h4>Find partners</h4><p>A few AI-heavy companies that rely on LLM APIs in their products.</p></div>
-      <div class="st" style="--d:.45s"><h4>Run pilots</h4><p>Start in shadow mode, then gradually take over real traffic.</p></div>
-      <div class="st" style="--d:.8s"><h4>Prepare launch</h4><p>Build what the pilots taught us into the product.</p></div>
-      <div class="st" style="--d:1.15s"><h4>Go live</h4><p>Any company can create an account and get an API key.</p></div>
-      <div class="st" style="--d:1.5s"><h4>Grow</h4><p>Use real usage data to keep improving the router.</p></div>
-    </div>
-    <div style="margin-top:56px" class="reveal"><a class="btn btn-ghost" href="prestudy.html">Read the pre-study summary
-      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a></div>
   </div>
 </section>
 

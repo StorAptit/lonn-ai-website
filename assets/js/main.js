@@ -139,7 +139,6 @@
     function missing() { f.classList.add("missing"); }
     var src = $("source", v);
     if (src) src.addEventListener("error", missing);
-    if (v.networkState === 3) missing();
     v.addEventListener("error", missing);
     if (b) b.addEventListener("click", function () {
       f.classList.add("playing"); v.setAttribute("controls", "");

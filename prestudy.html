@@ -256,7 +256,7 @@
       <p class="reveal">Real user prompts from the WildChat dataset look little like benchmark questions. Adding about 3,000 of them to the training data raised task-type accuracy on an everyday test set from 31% to 51%.</p>
       <p class="lesson reveal"><b>Lesson:</b> benchmark results are optimistic for real traffic, and data from real use is what improves the classifier most.</p>
       <h3>4. Closing the gap to the oracle</h3>
-      <p class="reveal">Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. Checking the answer and escalating at most once was equal or better at every budget, by up to 1.9 points.</p>
+      <p class="reveal">Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. What worked was checking the answer: if it is empty, cut off or fails a code example in the prompt, the request is sent once more to the next-best model. Those answers would almost always be graded wrong, so the retry mostly turns failures into passes. At λ = 20 it raised accuracy from 83.7% to 85.8%, at a cost of $1.58 instead of $0.91, and at most of the budgets tested it beat spending the same money on routing alone.</p>
       <p class="lesson reveal"><b>Lesson:</b> most of the oracle’s lead cannot be predicted from the prompt alone. Checking the answer afterwards recovers part of it.</p>
     </section>
 
