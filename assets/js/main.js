@@ -114,7 +114,81 @@
     }
     requestAnimationFrame(frame);
   }
-  buildRoutes($("#hero-routes"), { labels: true });
+  /* ---------- hero: prompt -> Lönn -> 8 named models -> answer ---------- */
+  function buildHeroRouter(svg) {
+    if (!svg) return;
+    var W = 820, H = 600, cy = 300;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var MODELS = ["Claude Sonnet 5.5", "Gemini 3.8 Flash", "Muse Spark 1.3", "DeepSeek V4 Pro",
+                  "DeepSeek V4.1 Flash", "GLM 5.3 Flash", "gpt-oss-120b", "gpt-oss-20b"];
+    // The three requests from the walkthrough video and the model the router picked for each.
+    var CASES = [
+      { p1: "Rewrite this section", p2: "in a formal tone", task: "writing · legal", m: 4 },
+      { p1: "Calculate the late-", p2: "payment interest", task: "maths · arithmetic", m: 6 },
+      { p1: "Analyse which laws", p2: "were breached", task: "knowledge · legal", m: 0 }
+    ];
+    var hubX = 236, pillX = 420, pillW = 178, pillH = 32, ansX = 782, font = "DM Sans, sans-serif";
+    var g = el("g", {}, svg);
+    var cap = el("text", { x: pillX + pillW / 2, y: 30, "text-anchor": "middle", fill: "#8FA597", "font-size": 12, "font-weight": 700, "letter-spacing": "2", "font-family": font }, g);
+    cap.textContent = "8 AI MODELS";
+    var paths = [], pills = [], labels = [], ys = [];
+    for (var i = 0; i < MODELS.length; i++) {
+      var y = 66 + i * 67; ys.push(y);
+      var d = "M" + (hubX + 28) + "," + cy + " C" + (hubX + 110) + "," + cy + " " + (pillX - 80) + "," + y + " " + pillX + "," + y +
+              " L" + (pillX + pillW) + "," + y +
+              " C" + (pillX + pillW + 80) + "," + y + " " + (ansX - 100) + "," + cy + " " + (ansX - 16) + "," + cy;
+      paths.push(el("path", { d: d, class: "route" }, g));
+    }
+    // prompt card
+    el("path", { d: "M182," + cy + " L" + (hubX - 28) + "," + cy, class: "route", style: "stroke:rgba(201,216,205,.5)" }, g);
+    el("rect", { x: 8, y: cy - 46, width: 174, height: 92, rx: 14, fill: "rgba(255,255,255,.06)", stroke: "rgba(201,216,205,.28)" }, g);
+    var pk = el("text", { x: 24, y: cy - 20, fill: "#8FA597", "font-size": 11, "font-weight": 700, "letter-spacing": "1.6", "font-family": font }, g); pk.textContent = "YOUR PROMPT";
+    var t1 = el("text", { x: 24, y: cy + 4, fill: "#EAF1EC", "font-size": 14, "font-weight": 500, "font-family": font }, g);
+    var t2 = el("text", { x: 24, y: cy + 24, fill: "#EAF1EC", "font-size": 14, "font-weight": 500, "font-family": font }, g);
+    // Lönn hub
+    el("circle", { cx: hubX, cy: cy, r: 40, fill: "rgba(0,192,96,.10)" }, g);
+    el("circle", { cx: hubX, cy: cy, r: 28, fill: "#0B2E14", stroke: "#00C060", "stroke-width": 2.5 }, g);
+    var hl = el("text", { x: hubX, y: cy + 5, "text-anchor": "middle", fill: "#EAF1EC", "font-size": 14, "font-weight": 700, "font-family": font }, g); hl.textContent = "Lönn";
+    var tag = el("text", { x: hubX, y: cy + 62, "text-anchor": "middle", fill: "#00C060", "font-size": 12.5, "font-weight": 600, "font-family": font }, g);
+    // model pills
+    for (var j = 0; j < MODELS.length; j++) {
+      var r = el("rect", { x: pillX, y: ys[j] - pillH / 2, width: pillW, height: pillH, rx: pillH / 2, class: "pill-bg" }, g);
+      var tx = el("text", { x: pillX + pillW / 2, y: ys[j] + 5, "text-anchor": "middle", class: "pill-tx", "font-family": font }, g);
+      tx.textContent = MODELS[j]; pills.push(r); labels.push(tx);
+    }
+    // answer
+    el("circle", { cx: ansX, cy: cy, r: 16, class: "node hot" }, g);
+    var at = el("text", { x: ansX, y: cy + 40, "text-anchor": "middle", fill: "#8FA597", "font-size": 13, "font-family": font }, g); at.textContent = "Answer";
+    var pulse = el("circle", { r: 6, class: "pulse", cx: hubX, cy: cy }, g);
+
+    var ci = 0, cur;
+    function show(k) {
+      var c = CASES[k]; cur = c.m;
+      t1.textContent = "“" + c.p1; t2.textContent = c.p2 + "”"; tag.textContent = c.task;
+      paths.forEach(function (p, j) { p.classList.toggle("hot", j === cur); });
+      pills.forEach(function (p, j) { p.classList.toggle("on", j === cur); });
+      labels.forEach(function (p, j) { p.classList.toggle("on", j === cur); });
+    }
+    show(0);
+    if (reduce) { pulse.style.display = "none"; return; }
+    var len = paths[cur].getTotalLength(), t0 = null, dur = 2600, pause = 1300;
+    function frame(t) {
+      if (!t0) t0 = t;
+      var k = (t - t0) / dur;
+      if (k <= 1) {
+        var e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        var pt = paths[cur].getPointAtLength(e * len);
+        pulse.setAttribute("cx", pt.x); pulse.setAttribute("cy", pt.y);
+        pulse.style.opacity = (pt.x > pillX && pt.x < pillX + pillW) ? 0 : 1;
+      } else if (k > 1 + pause / dur) {
+        ci = (ci + 1) % CASES.length; show(ci);
+        len = paths[cur].getTotalLength(); t0 = t;
+      } else { pulse.style.opacity = 0; }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  buildHeroRouter($("#hero-routes"));
   buildRoutes($("#final-routes"));
 
   /* ---------- scrollytelling: how it works ---------- */
