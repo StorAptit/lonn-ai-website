@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202611082108">
+<link rel="stylesheet" href="assets/css/style.css?v=202611101942">
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
@@ -37,7 +37,7 @@
   <div class="wrap" style="position:relative;z-index:2">
     <span class="eyebrow reveal">The pre-study</span>
     <h1 class="h-l reveal" style="--d:.06s">Can a router cut LLM costs <span class="g">without cutting quality?</span></h1>
-    <p class="q reveal" style="--d:.14s">How can requests be routed between LLM providers so that cost is reduced while answer quality is maintained?</p>
+    <p class="q reveal" style="--d:.14s">What if companies could get the quality they need from AI without constantly deciding which model to use, and understand exactly where their money goes?</p>
     <div class="ps-meta reveal" style="--d:.22s">
       <div><b data-count="690">690</b>benchmark prompts</div>
       <div><b data-count="8">8</b>candidate models</div>
@@ -70,23 +70,43 @@
     <!-- 1 INTRO -->
     <section class="ps-sec" id="intro">
       <span class="eyebrow">01 · Introduction</span>
-      <h2 class="reveal">LLMs became infrastructure, and the bill became hard to predict.</h2>
-      <p class="reveal">Companies that use large language models through an API pay per token, with output tokens usually priced higher than input. New models arrive almost every month, and prices between them can differ by more than ten times, in extreme cases more than a hundred. A choice that made sense a few months ago can be expensive or outdated today.</p>
-      <p class="reveal">Usage is changing too. Short one-off questions have given way to long conversations, multi-step workflows and agents that make many calls on their own, and reasoning models generate extra tokens before they answer. Companies are left unsure on two levels: what next month will cost, and whether they use the right model for each task. Usually all they have to go on is a single total bill from each provider.</p>
+      <h2 class="reveal">Companies spend more on AI every year, and struggle to see what it buys.</h2>
 
-      <h3>The research question, in four parts</h3>
-      <div class="cards four">
-        <div class="card reveal"><span class="tag">Technical</span><h4>Difficulty estimation</h4><p>How well can a prompt’s difficulty be estimated before it is answered?</p></div>
-        <div class="card reveal" style="--d:.06s"><span class="tag">Technical</span><h4>Routing decision</h4><p>How should that estimate be combined with prices, and the cost of reasoning, to pick a model?</p></div>
-        <div class="card reveal" style="--d:.12s"><span class="tag">Technical</span><h4>Cost and quality</h4><p>How large is the saving compared with always using a strong model, and what does it cost in quality?</p></div>
-        <div class="card dk reveal" style="--d:.18s"><span class="tag">Business</span><h4>Adoption</h4><p>What does it take to turn a prototype into a product ordinary companies can use?</p></div>
+      <h3>Background</h3>
+      <p class="reveal">Organisations use AI both through ready-made applications such as ChatGPT and by building large language models into their own products and internal systems through an API. Enterprise spending on generative AI is growing fast, and a large part of it goes to those API integrations.</p>
+      <div class="cards three">
+        <div class="card dk reveal"><span class="tag">Enterprise generative AI</span><h4 style="font-size:30px">$37 billion</h4><p>estimated spending in 2025, up from $11.5 billion in 2024 (Menlo Ventures, 2025)</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Model APIs</span><h4 style="font-size:30px">$12.5 billion</h4><p>of that went to foundation model APIs (Menlo Ventures, 2025)</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Multi-model use</span><h4 style="font-size:30px">37%</h4><p>of 100 surveyed CIOs used five or more models in 2025, up from 29% a year earlier (Andreessen Horowitz, 2025)</p></div>
+      </div>
+      <ul class="bullets">
+        <li class="reveal"><b>Billing is per token.</b> Input and output tokens are priced separately, and output usually costs more. The total depends on how many requests are sent, how many tokens each uses and which models handle them.</li>
+        <li class="reveal"><b>Choosing a model is hard.</b> Public benchmarks help, but a strong score does not guarantee a model suits a particular application. Companies weigh benchmarks against their own testing, cost, reliability, security and existing cloud relationships.</li>
+        <li class="reveal"><b>The market keeps moving.</b> Providers keep releasing models with different capabilities and prices. Companies buy from several vendors because models differ by use case, yet prompts, guardrails and evaluations become tied to one model, so switching takes engineering and revalidation.</li>
+        <li class="reveal"><b>Spending is hard to trace.</b> Providers report usage and cost, but not which business activities caused it. Linking spend to teams, features or processes across several providers takes extra integration and maintenance.</li>
+      </ul>
+
+      <h3>Problem</h3>
+      <p class="reveal">Every AI request has a cost, but not every request needs the same level of capability. Developers need reliable performance, while finance needs to understand and control spending. The problem has two parts.</p>
+      <div class="cards">
+        <div class="card reveal"><span class="tag">Part 1</span><h4>The cost-quality trade-off</h4><p>An expensive model on a routine task wastes money. A cheaper model on a demanding task can compromise the result. How much is worth paying for the quality each task requires?</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Part 2</span><h4>Traceability</h4><p>The total bill does not show which features, workflows or customer activities generated it, or whether the quality delivered justified the cost.</p></div>
       </div>
 
-      <h3>The proposed solution</h3>
-      <p class="reveal">Lönn AI is an API middleware. A company replaces its provider’s key and endpoint with Lönn’s. For every request, Lönn identifies the kind of task, picks the model in a small, curated pool with the best balance of quality and cost for it, and forwards the request to the provider that serves that model. The choice is based on <b>measured</b> accuracy and billed cost per task type, not on list prices. One budget setting decides how much weight cost gets compared with quality.</p>
+      <h3>Solution</h3>
+      <p class="reveal">Lönn AI sits between a company’s applications and its AI providers as a single API layer. It handles model selection and makes the resulting spending visible.</p>
+      <ul class="bullets">
+        <li class="reveal"><b>Routing.</b> Each task goes to a suitable model, based on the quality it requires, the cost of serving it and the company’s security and data-processing requirements. The choices stay aligned as models and prices change, without developers having to monitor the market by hand.</li>
+        <li class="reveal"><b>Cost tracking.</b> The same layer connects spending to the features, workflows and customer activities behind it. Developers see what their applications cost to run, and finance sees what drives expenditure.</li>
+      </ul>
 
       <h3>Scope</h3>
-      <p class="reveal">The pre-study covers LLM use through APIs only, not subscriptions to chat assistants such as ChatGPT or Copilot. The prototype covers the core routing mechanism and is evaluated in a test setting, not on real customer traffic. Prompt compression, cost tracking and billing are outside the prototype, and data security is treated theoretically.</p>
+      <p class="reveal">The pre-study covers organisations that integrate hosted LLMs into their own products and workflows through token-billed APIs, not subscriptions to ready-made chat assistants such as ChatGPT or Microsoft Copilot. It evaluates technical, commercial and regulatory feasibility along two tracks. The intended product and the prototype are not identical.</p>
+      <div class="cards">
+        <div class="card reveal"><span class="tag">Track 1 · Theoretical</span><h4>The intended product</h4><p>Defines and evaluates the full product from academic literature, provider documentation, participatory design interviews and financial modelling: the routing architecture, expenditure attribution and customer controls, data governance and the commercial model.</p></div>
+        <div class="card dk reveal" style="--d:.06s"><span class="tag">Track 2 · Empirical</span><h4>The prototype</h4><p>Tests whether automated model selection cuts cost while preserving answer quality. Every tested prompt needs paid API calls, so it is limited to the core routing mechanism, evaluated offline on a fixed benchmark with a limited pool of models.</p></div>
+      </div>
+      <p class="reveal">Cost tracking, billing, data-security enforcement and prompt compression are not implemented in the prototype. They are covered conceptually in the product design and in the roadmap.</p>
     </section>
 
     <!-- 2 METHOD -->
@@ -335,6 +355,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202611082108"></script>
+<script src="assets/js/main.js?v=202611101942"></script>
 </body>
 </html>
