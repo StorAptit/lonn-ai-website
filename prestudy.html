@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202611102027">
+<link rel="stylesheet" href="assets/css/style.css?v=202611102032">
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
@@ -35,8 +35,8 @@
 <section class="dark ps-hero">
   <div class="hero-glow"></div>
   <div class="wrap" style="position:relative;z-index:2">
-    <span class="eyebrow reveal">Summary of the report</span>
-    <h1 class="h-l reveal" style="--d:.06s">Lönn AI <span class="g">Prestudy</span></h1>
+    <span class="eyebrow reveal">The pre-study</span>
+    <h1 class="h-l reveal" style="--d:.06s">Can a router cut LLM costs <span class="g">without cutting quality?</span></h1>
     <p class="q reveal" style="--d:.14s">What if companies could get the quality they need from AI without constantly deciding which model to use, and understand exactly where their money goes?</p>
     <div class="ps-meta reveal" style="--d:.22s">
       <div><b data-count="690">690</b>benchmark prompts</div>
@@ -52,56 +52,26 @@
   <aside class="toc" aria-label="Contents">
     <div class="t">Contents</div>
     <ol>
-      <li><a href="#definitions">Definitions</a></li>
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#method">Method</a></li>
-      <li><a href="#assumptions">Assumptions and requirements</a></li>
-      <li><a href="#market">Market analysis</a></li>
+      <li><a href="#assumptions">Assumptions</a></li>
+      <li><a href="#market">Market</a></li>
       <li><a href="#stakeholders">Stakeholders</a></li>
-      <li><a href="#interviews">Interviews</a></li>
-      <li><a href="#results">Result</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#iterations">How we got there</a></li>
+      <li><a href="#profitability">Profitability</a></li>
       <li><a href="#discussion">Discussion</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
-      <li><a href="#appendix">Appendix</a></li>
+      <li><a href="#about">About the report</a></li>
     </ol>
   </aside>
 
   <main class="ps-content">
 
-    <!-- 1 DEFINITIONS -->
-    <section class="ps-sec" id="definitions">
-      <span class="eyebrow">01 · Definitions / Terminology</span>
-      <h2 class="reveal">Definitions</h2>
-      <dl class="defs reveal">
-        <div><dt>Accuracy (pass rate)</dt><dd>The share of requests a model answers correctly. In the routing table it is measured per task type and model on the benchmark.</dd></div>
-        <div><dt>Answer check</dt><dd>A check of a model’s answer before it is returned. It flags answers that are empty, cut off at the token limit, or contain code that fails the examples in the prompt. A flagged answer can trigger one extra call to another model.</dd></div>
-        <div><dt>API</dt><dd>The interface through which software sends a request to a model provider and receives an answer. Use is billed per call.</dd></div>
-        <div><dt>Benchmark</dt><dd>A fixed set of prompts with known correct answers or grading rules, used to compare models and routing strategies on the same requests.</dd></div>
-        <div><dt>Benchmark oracle</dt><dd>A theoretical router that knows every model’s result in advance and picks the cheapest model that answers correctly. An upper bound that cannot be built in practice.</dd></div>
-        <div><dt>Billed cost</dt><dd>What the provider charges for a request, including input, output and reasoning tokens.</dd></div>
-        <div><dt>Classifier</dt><dd>The model that estimates which task type a prompt belongs to. In the prototype it is a text embedding (bge-small) followed by a linear layer.</dd></div>
-        <div><dt>Cross-validation</dt><dd>A way to evaluate on data that was not used to build the router. The prompts are split into folds, and each fold is tested with a routing table built from the others.</dd></div>
-        <div><dt>Embedding</dt><dd>A numerical vector representation of a text, where texts with similar meaning get similar vectors.</dd></div>
-        <div><dt>Escalation</dt><dd>Sending a request again to a stronger model after the answer check has flagged the first answer.</dd></div>
-        <div><dt>Fallback</dt><dd>Sending a request to the next model in the ranking when a provider call fails.</dd></div>
-        <div><dt>KV cache</dt><dd>Stored intermediate results that let a provider reuse context it has already processed. The benefit can be lost when a request switches model.</dd></div>
-        <div><dt>LLM judge</dt><dd>A language model that grades another model’s answer against a set of criteria, used where there is no single correct answer.</dd></div>
-        <div><dt>LLM routing</dt><dd>Choosing, for each request, which model and provider should handle it.</dd></div>
-        <div><dt>Middleware</dt><dd>Software that sits between the customer’s application and the model providers and forwards requests.</dd></div>
-        <div><dt>Model pool</dt><dd>The set of candidate models the router can choose between.</dd></div>
-        <div><dt>Model provider</dt><dd>A company that offers access to a model through an API, for example OpenAI, Anthropic, Google or OpenRouter.</dd></div>
-        <div><dt>Reasoning tokens</dt><dd>Tokens a model generates while it “thinks” before answering. They are billed as output even though they are often not shown.</dd></div>
-        <div><dt>SDK</dt><dd>A code library that makes it easier for developers to call a service from their own programs.</dd></div>
-        <div><dt>Task type</dt><dd>One of the 15 finer categories the classifier uses. Task types are separated where the models perform differently.</dd></div>
-        <div><dt>Token</dt><dd>A short piece of text, often part of a word, that models read and write. Usage is billed per token, with output usually priced higher than input.</dd></div>
-        <div><dt>ZDR (zero data retention)</dt><dd>A setting under which the prompt and the answer are not stored after the request has been processed.</dd></div>
-      </dl>
-    </section>
-
-    <!-- 2 INTRODUCTION -->
+    <!-- 1 INTRO -->
     <section class="ps-sec" id="intro">
-      <span class="eyebrow">02 · Introduction</span>
-      <h2 class="reveal">Introduction</h2>
+      <span class="eyebrow">01 · Introduction</span>
+      <h2 class="reveal">Companies spend more on AI every year, and struggle to see what it buys.</h2>
 
       <h3>Background</h3>
       <p class="reveal">Organisations use AI both through ready-made applications such as ChatGPT and by building large language models into their own products and internal systems through an API. Enterprise spending on generative AI is growing fast, and a large part of it goes to those API integrations.</p>
@@ -140,289 +110,259 @@
       <p class="reveal">Cost tracking, billing, data-security enforcement and prompt compression are not implemented in the prototype. They are covered conceptually in the product design and in the roadmap.</p>
     </section>
 
-    <!-- 3 METHOD -->
+    <!-- 2 METHOD -->
     <section class="ps-sec" id="method">
-      <span class="eyebrow">03 · Method</span>
-      <h2 class="reveal">Method</h2>
+      <span class="eyebrow">02 · Method</span>
+      <h2 class="reveal">An iterative feasibility study, with one method per assumption.</h2>
+      <p class="reveal">The team listed the technical, business and trust assumptions the service depends on and chose a way to test each. Findings from one activity fed the next: stakeholder feedback shaped which routing decisions customers control, prototype comparisons guided the routing logic, and the measured cost difference fed the financial model.</p>
+      <div class="cards">
+        <div class="card reveal"><span class="tag">Literature &amp; market</span><h4>Routing research and competitors</h4><p>Do models succeed on different requests, can a router predict which one to use, and can new models be added without retraining? Competitors compared by customers, routing, controls and pricing. Provider documentation reviewed for processing location, retention and training use.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Participatory design</span><h4>Three consultations</h4><p>A founding engineer at a YC-backed startup, an operations specialist in sensitive data handling, and a potential customer on expected token volumes.</p></div>
+        <div class="card reveal"><span class="tag">Prototype</span><h4>Benchmark evaluation</h4><p>Routing strategies replayed against stored outputs from every model, so versions can be compared on identical requests with a known grade and cost.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Financial</span><h4>Profitability model</h4><p>Gross savings from the benchmark, the proposed fee, variable and fixed costs, and break-even expressed in customers.</p></div>
+      </div>
 
-      <h3>Study design</h3>
-      <p class="reveal">The project was an iterative feasibility study. It identified the technical, business and trust assumptions the service depends on and chose an assessment method for each: prototype development and benchmark testing for routing performance, participatory design interviews and literature review for customer needs and data handling, and a financial model for commercial feasibility.</p>
-      <p class="reveal">Findings from one activity informed the next. Stakeholder feedback helped define which routing decisions customers should control, comparisons between prototype versions guided the routing logic, and the measured cost difference between routed and fixed-model requests fed the financial model.</p>
-
-      <h3>Literature and market review</h3>
-      <p class="reveal">The literature review focused on three technical questions: whether models answer different requests correctly, whether a router can predict which model to use before an answer is available, and whether new models can be added without retraining the routing system. Results from oracle routing were kept apart from results achieved by implemented routers, because they answer different questions about feasibility.</p>
-      <p class="reveal">The market review covered services that route LLM requests through an API, compared by target customers, routing capabilities, customer controls and pricing. For the trust assessment, the team reviewed provider documentation on processing location, retention and training use.</p>
-
-      <h3>Stakeholder consultations and participatory design</h3>
-      <p class="reveal">Three participants were consulted. A founding engineer at Zaplar discussed how LLMs were used across product functions, where model selection could be delegated and where predictable quality mattered. An operations specialist with experience of sensitive data advised on retention, hosting, encryption and documentation. A potential customer gave an estimated range of monthly API token usage for a B2B use case, which was used for the customer scenario in the financial analysis.</p>
-
-      <h3>Prototype development and benchmark evaluation</h3>
-      <h4 class="sub">Benchmark construction</h4>
-      <p class="reveal">A common benchmark was built so that routing strategies could be compared on the same requests, with a known grade and cost for every model choice. It has 690 prompts across five task families: mathematics (MATH-500), programming (HumanEval+, MBPP+ and LiveCodeBench), knowledge (MMLU-Pro, GPQA Diamond and ARC-Challenge), instruction following (IFEval) and business writing (WritingBench).</p>
-      <p class="reveal">Each of the eight candidate models processed every prompt once, producing 5,520 outputs, each stored with its grade and billed cost, including reasoning tokens. Grading followed the task: reference answers, executable tests for programming, rule-based checks for instruction following, and an LLM judge applying the WritingBench rubric for business writing.</p>
+      <h3>The benchmark</h3>
+      <p class="reveal">690 prompts across five task families: maths (MATH-500), programming (HumanEval+, MBPP+, LiveCodeBench), knowledge (MMLU-Pro, GPQA Diamond, ARC-Challenge), instruction following (IFEval) and business writing (WritingBench). Each of the eight models answered every prompt once, giving 5,520 outputs, each stored with its grade and billed cost, including reasoning tokens. Grading used reference answers, executable tests, rule-based checks or an LLM judge with the WritingBench rubric, depending on the task.</p>
       <div class="table-wrap reveal">
         <table>
-          <thead><tr><th>Model</th><th class="num">Output price (USD per million tokens)</th><th class="num">Correct (excl. writing)</th><th class="num">Billed cost, 690 prompts (USD)</th></tr></thead>
+          <thead><tr><th>Model</th><th class="num">Output price (USD / M tokens)</th><th class="num">Correct (excl. writing)</th><th class="num">Billed cost, 690 prompts</th></tr></thead>
           <tbody>
-            <tr><td>Claude Sonnet 5.5</td><td class="num">10.00</td><td class="num">92%</td><td class="num">7.58</td></tr>
-            <tr><td>Gemini 3.8 Flash</td><td class="num">3.75</td><td class="num">90%</td><td class="num">4.52</td></tr>
-            <tr><td>Muse Spark 1.3</td><td class="num">4.25</td><td class="num">88%</td><td class="num">7.37</td></tr>
-            <tr><td>DeepSeek V4.1 Flash</td><td class="num">0.60</td><td class="num">84%</td><td class="num">1.16</td></tr>
-            <tr><td>gpt-oss-120b</td><td class="num">0.17</td><td class="num">82%</td><td class="num">0.29</td></tr>
-            <tr><td>DeepSeek V4 Pro</td><td class="num">0.89</td><td class="num">81%</td><td class="num">3.98</td></tr>
-            <tr><td>gpt-oss-20b</td><td class="num">0.09</td><td class="num">77%</td><td class="num">0.18</td></tr>
-            <tr><td>GLM 5.3 Flash</td><td class="num">1.20</td><td class="num">75%</td><td class="num">0.37</td></tr>
+            <tr><td>Claude Sonnet 5.5</td><td class="num">10.00</td><td class="num">92%</td><td class="num">$7.58</td></tr>
+            <tr><td>Gemini 3.8 Flash</td><td class="num">3.75</td><td class="num">90%</td><td class="num">$4.52</td></tr>
+            <tr><td>Muse Spark 1.3</td><td class="num">4.25</td><td class="num">88%</td><td class="num">$7.37</td></tr>
+            <tr><td>DeepSeek V4.1 Flash</td><td class="num">0.60</td><td class="num">84%</td><td class="num">$1.16</td></tr>
+            <tr><td>gpt-oss-120b</td><td class="num">0.17</td><td class="num">82%</td><td class="num">$0.29</td></tr>
+            <tr><td>DeepSeek V4 Pro</td><td class="num">0.89</td><td class="num">81%</td><td class="num">$3.98</td></tr>
+            <tr><td>gpt-oss-20b</td><td class="num">0.09</td><td class="num">77%</td><td class="num">$0.18</td></tr>
+            <tr><td>GLM 5.3 Flash</td><td class="num">1.20</td><td class="num">75%</td><td class="num">$0.37</td></tr>
           </tbody>
         </table>
       </div>
-      <h4 class="sub">Routing</h4>
-      <p class="reveal">Prompts were grouped into 15 task types. A classifier based on bge-small embeddings and a linear layer estimated the probability p(t) of each task type for a request. For every combination of task type and model, the observed pass rate and mean billed cost per request were calculated. Models were ranked using this score:</p>
-      <div class="formula reveal" style="max-width:760px;font-size:15px">Routing score(m) = Σ<sub>t</sub> p(t) · accuracy(t, m) − λ · Σ<sub>t</sub> p(t) · cost(t, m)</div>
-      <p class="reveal" style="margin-top:16px">Because both terms are weighted by the task probabilities, an uncertain classification gives a smooth decision instead of a hard mistake. λ controls how much weight the router gives to cost; higher values favour cheaper models. The default configuration used λ = 20.</p>
-      <h4 class="sub">Evaluation</h4>
-      <p class="reveal">Each routing strategy was evaluated by replaying its decisions against the stored outputs, so versions could be compared without generating new outputs. The final router was evaluated with its output checks enabled and disabled. Five-fold cross-validation at prompt level, repeated across ten random partitions, kept each test prompt’s outcomes out of its routing-table estimates.</p>
-      <p class="reveal">The main measures were the overall pass rate across all five task families and total provider cost, including additional calls. The router was compared with the strongest fixed model and with the benchmark oracle, which selects the cheapest model with a passing output for each prompt. Classifier processing time was measured separately on a CPU.</p>
+      <p class="muted reveal">List price is a poor guide to real cost: DeepSeek V4 Pro’s output price is under a quarter of Gemini 3.8 Flash’s, yet it cost almost as much on the same prompts ($3.98 against $4.52).</p>
 
-      <h3>Financial analysis</h3>
-      <p class="reveal">The financial analysis examined how much of the benchmark saving a customer would keep after service fees, and how much usage Lönn would need to cover its operating costs. Gross savings were the difference between the fixed reference model’s cost and the router’s provider cost for the same prompts. The service fee was applied to those savings, variable costs were deducted, and monthly fixed costs were divided by the resulting contribution to get the break-even spend, expressed as an indicative number of customers. Pricing, customer usage and operating costs were treated as scenario assumptions.</p>
+      <h3>The routing rule</h3>
+      <p class="reveal">Prompts are grouped into 15 task types. A classifier (bge-small embeddings and a linear layer) estimates the probability p(t) of each type. For every task type and model, the observed pass rate and mean billed cost are known. Each model is scored as:</p>
+      <div class="formula reveal" style="max-width:760px;font-size:15px">score(m) = Σ<sub>t</sub> p(t) · accuracy(t, m) − λ · Σ<sub>t</sub> p(t) · cost(t, m)</div>
+      <p class="reveal" style="margin-top:16px">Because both terms are weighted by the task probabilities, an uncertain classification gives a smooth decision rather than a hard mistake. λ sets how much weight cost gets. The default is λ = 20.</p>
+
+      <h3>Evaluation</h3>
+      <p class="reveal">Every strategy was evaluated by replaying its choices against the stored outputs, using five-fold cross-validation at prompt level, repeated over ten random partitions, so no test prompt ever informed its own routing table. The router was compared with the strongest fixed model and with an <b>oracle</b> that, in hindsight, picks the cheapest model that answered each prompt correctly.</p>
     </section>
 
-    <!-- 4 ASSUMPTIONS -->
+    <!-- 3 ASSUMPTIONS -->
     <section class="ps-sec" id="assumptions">
-      <span class="eyebrow">04 · Assumptions and Requirements</span>
-      <h2 class="reveal">Assumptions and Requirements</h2>
-      <p class="reveal">The pre-study examines three conditions for feasibility. The service must create enough value for customers to justify its fee, select models reliably enough to make routing worthwhile, and handle requests under conditions customers can accept. The assumptions state what must hold for the concept to be viable. The requirements describe what the product must deliver.</p>
+      <span class="eyebrow">03 · Assumptions and requirements</span>
+      <h2 class="reveal">Three conditions for feasibility.</h2>
+      <p class="reveal">The service must create enough value to justify its fee, pick models reliably enough to make routing worthwhile, and handle data under conditions customers accept.</p>
       <div class="cards three">
         <div class="card reveal">
-          <span class="tag">4.1</span>
-          <h4>Business</h4>
-          <p><b>A1</b> Organisations using LLM APIs have inference costs high enough for routing to give meaningful value, through savings and cost transparency.<br><b>A2</b> Part of that value can be captured through pricing that customers accept and that makes a sustainable, profitable business.</p>
-          <p style="margin-top:10px"><b>R1</b> Measurable financial value to customers after service fees.<br><b>R2</b> Visibility into and control over AI spending: usage breakdowns, cost forecasts and routing preferences.<br><b>R3</b> A pricing and payment model that captures a profitable share of the savings while limiting credit risk towards providers.</p>
+          <span class="tag">Business</span>
+          <h4>Value that can be captured</h4>
+          <p><b>A1</b> API costs are high enough that routing creates real savings and transparency.<br><b>A2</b> Part of that value can be captured with pricing customers accept.</p>
+          <p style="margin-top:10px"><b>R1–R3</b> Measurable value after fees; visibility and control over spend, with usage breakdowns, forecasts and routing preferences; a pricing and payment model that captures a profitable share of the savings and limits credit risk towards providers.</p>
         </div>
         <div class="card reveal" style="--d:.06s">
-          <span class="tag">4.2</span>
-          <h4>Technical</h4>
-          <p><b>A3</b> Models in the pool have complementary strengths, predictable enough for per-request selection to beat a single fixed model on cost and quality, and they can be re-estimated as models enter or leave the pool.<br><b>A4</b> The cost and latency added by routing are low enough to keep the benefit.</p>
-          <p style="margin-top:10px"><b>R4</b> Lower inference cost at comparable quality and acceptable latency, with minimal integration effort.<br><b>R5</b> Reliable, maintainable routing: automated fallback when providers are unavailable, and modular updates for new models or prices.</p>
+          <span class="tag">Technical</span>
+          <h4>Predictable strengths</h4>
+          <p><b>A3</b> Models have complementary strengths that are predictable enough for per-request selection to give a better cost-quality trade-off than one fixed model, and they can be re-estimated as models enter or leave the pool.<br><b>A4</b> Routing adds little cost and latency.</p>
+          <p style="margin-top:10px"><b>R4–R5</b> Lower cost at comparable quality and acceptable latency, with minimal integration effort; automatic fallback and modular updates as models and prices change.</p>
         </div>
         <div class="card reveal" style="--d:.12s">
-          <span class="tag">4.3</span>
-          <h4>Trust and Safety</h4>
-          <p><b>A5</b> Customers will accept standard data-handling settings and documented safeguards as sufficient assurance.<br><b>A6</b> Provider configurations and contracts can be verified well enough to enforce these settings across the eligible pool.</p>
-          <p style="margin-top:10px"><b>R6</b> Standard settings for processing location, retention and training use, including zero data retention, enforced across Lönn and downstream providers.<br><b>R7</b> Appropriate security controls, confidentiality and data-processing agreements, current provider information, and documented retention, deletion and incident procedures.</p>
+          <span class="tag">Trust and safety</span>
+          <h4>Data customers can hand over</h4>
+          <p><b>A5</b> Standard data-handling settings and documented safeguards are enough assurance.<br><b>A6</b> Provider configurations can be verified well enough to enforce them.</p>
+          <p style="margin-top:10px"><b>R6–R7</b> Settings for processing location, retention and training use, including zero data retention; security controls, agreements and documented procedures.</p>
         </div>
       </div>
-      <p class="reveal"><b>Business.</b> Keeping a product affordable once it gets real traffic is harder than building an affordable prototype, and spending spread over several providers’ portals is easy to lose track of. Capturing the value means taking a share of the savings while customers stay better off; OpenRouter, for comparison, charges a 5.5% platform fee on credit purchases. As a middleman, Lönn must also avoid being left with a provider bill a customer cannot or will not pay.</p>
-      <p class="reveal"><b>Technical.</b> The router aims to send simpler requests to lower-cost models and keep more capable models for demanding tasks. Its own processing adds latency and cost, which must be weighed against the savings, and fallback is needed because provider availability varies.</p>
-      <p class="reveal"><b>Trust and safety.</b> Lönn matches providers’ published retention and zero-data-retention conditions and verified endpoint configurations against the customer’s settings to decide eligibility, and revalidates them periodically and after relevant changes. ISO/IEC 27001 certification is optional, so the initial approach relies on documented controls, processing agreements and implementation evidence. Customer acceptance of this assurance remains an assumption to validate.</p>
+      <p class="reveal">On trust, Lönn matches each customer’s settings against verified provider endpoint conditions to decide which models are eligible for a request, and re-checks those conditions periodically and after relevant changes. ISO/IEC 27001 certification is optional, so the initial approach relies on documented controls, processing agreements and implementation evidence. Whether customers accept this level of assurance is still an assumption to validate.</p>
     </section>
 
-    <!-- 5 MARKET -->
+    <!-- 4 MARKET -->
     <section class="ps-sec" id="market">
-      <span class="eyebrow">05 · Market analysis</span>
-      <h2 class="reveal">Market analysis</h2>
-      <h3>LLM Routing Market</h3>
+      <span class="eyebrow">04 · Market analysis</span>
+      <h2 class="reveal">A young market moving from access to decisions.</h2>
       <div class="timeline">
-        <div class="ti reveal"><div class="yr">2023</div><p>OpenRouter and Martian describe their products, LiteLLM launches and Cloudflare introduces AI Gateway. The focus is reaching many providers through one interface.</p></div>
-        <div class="ti reveal"><div class="yr">2024–2025</div><p>The focus moves to choosing a model based on the request itself, for example AWS Intelligent Prompt Routing, Microsoft Model Router and Vercel AI Gateway. Routing starts to become part of mainstream cloud infrastructure.</p></div>
-        <div class="ti reveal"><div class="yr">2026</div><p>Offers are more configurable and enterprise-oriented, with explicit control over cost and quality, budgets and quotas, and regional controls for where inference runs.</p></div>
+        <div class="ti reveal"><div class="yr">2023</div><p>OpenRouter, Martian, LiteLLM and Cloudflare AI Gateway appear. The focus is reaching many providers through one interface.</p></div>
+        <div class="ti reveal"><div class="yr">2024–2025</div><p>Model choice based on the request itself: AWS Intelligent Prompt Routing, Microsoft Model Router, Vercel AI Gateway. Routing enters mainstream cloud infrastructure.</p></div>
+        <div class="ti reveal"><div class="yr">2026</div><p>Configurable, enterprise-oriented offers with explicit cost-quality control, budgets and quotas, and regional control over where inference runs.</p></div>
       </div>
-      <p class="reveal">The competition is moving from giving access to many models toward deciding which model and provider should handle each request, within limits for cost, performance, reliability and governance.</p>
-      <h3>Competitors</h3>
+      <h3>Four competitor segments</h3>
       <div class="table-wrap reveal">
         <table class="wraptable">
-          <thead><tr><th>Segment</th><th>Definition</th><th>Key competitors</th></tr></thead>
+          <thead><tr><th>Segment</th><th>What it is</th><th>Key competitors</th></tr></thead>
           <tbody>
-            <tr class="hl"><td>Multi-model routing platforms<br><span class="pill">Lönn’s segment</span></td><td class="wrapcell">One API to many models and providers, with routing based on quality, cost, latency and availability</td><td class="wrapcell">OpenRouter, Martian, MegaRouter, Requesty, Not Diamond, Vercel AI Gateway, Hugging Face, Eden AI</td></tr>
-            <tr><td>Enterprise AI gateways</td><td class="wrapcell">Central control of AI traffic: governance, security, budgets, observability and routing</td><td class="wrapcell">Portkey, TrueFoundry, Cloudflare AI Gateway</td></tr>
-            <tr><td>Self-hostable AI gateways</td><td class="wrapcell">Gateway and routing software that runs in infrastructure controlled by the customer</td><td class="wrapcell">LiteLLM, Kong AI Gateway, Helicone, Bifrost</td></tr>
-            <tr><td>Cloud-native AI routing</td><td class="wrapcell">Routing built into an existing hyperscaler environment</td><td class="wrapcell">Microsoft Foundry, AWS Bedrock, Google Vertex AI, Oracle OCI</td></tr>
+            <tr class="hl"><td>Multi-model routing platforms<br><span class="pill">Lönn’s segment</span></td><td class="wrapcell">One API to many models, routing on quality, cost, latency and availability</td><td class="wrapcell">OpenRouter, Martian, MegaRouter, Requesty, Not Diamond, Vercel AI Gateway, Hugging Face, Eden AI</td></tr>
+            <tr><td>Enterprise AI gateways</td><td class="wrapcell">Central control of AI traffic: governance, security, budgets, observability</td><td class="wrapcell">Portkey, TrueFoundry, Cloudflare AI Gateway</td></tr>
+            <tr><td>Self-hostable AI gateways</td><td class="wrapcell">Gateway software running in the customer’s own infrastructure</td><td class="wrapcell">LiteLLM, Kong AI Gateway, Helicone, Bifrost</td></tr>
+            <tr><td>Cloud-native AI routing</td><td class="wrapcell">Routing built into a hyperscaler environment</td><td class="wrapcell">Microsoft Foundry, AWS Bedrock, Google Vertex AI, Oracle OCI</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal">Lönn AI mainly targets the multi-model routing platform segment. The adjacent segments still matter: many are limited to the models and infrastructure of their own ecosystems, but as they add models and routing features they could overlap more with this market.</p>
+      <p class="reveal">Lönn mainly targets the multi-model routing segment. The adjacent segments still matter: as cloud platforms and enterprise gateways add models and routing features, they could overlap more with it.</p>
       <h3>Positioning</h3>
-      <p class="reveal">Lönn AI should be positioned between the broad model access of platforms such as OpenRouter and the more intelligence-driven routing of companies such as Martian. The aim is not to compete on the number of models and providers, but to choose a sufficiently broad and relevant portfolio and optimise how each request is carried out: better decisions across a diverse and complementary set of models and providers.</p>
-      <p class="reveal">Because capabilities, prices and infrastructure costs change quickly, Lönn AI should act as a dynamic optimisation layer that keeps adjusting its routing. Besides lowering cost, this can give customers more stability, since quality stays consistent and spending becomes easier to predict.</p>
+      <p class="reveal">Lönn should be positioned between the broad model access of platforms such as OpenRouter and the more intelligence-driven routing of companies such as Martian. The aim is not to compete on the number of models and providers, but to make better decisions across a diverse and complementary set of them, with cost-efficient inference that keeps output quality. As a dynamic optimisation layer that keeps adjusting as prices and models change, it can also give customers more stable quality and more predictable spending.</p>
     </section>
 
-    <!-- 6 STAKEHOLDER -->
+    <!-- 5 STAKEHOLDERS -->
     <section class="ps-sec" id="stakeholders">
-      <span class="eyebrow">06 · Stakeholder</span>
-      <h2 class="reveal">Stakeholders</h2>
+      <span class="eyebrow">05 · Stakeholders and interviews</span>
+      <h2 class="reveal">Five stakeholder groups, and three conversations that shaped the product.</h2>
       <div class="cards three">
-        <div class="card reveal"><h4>Customers</h4><p>A company that uses LLM provider APIs and pays for the tokens, in a product or in internal tools. Leadership or the budget owner (a CTO, head of engineering or IT budget owner) decides and wants lower, more predictable cost with maintained quality. Developers integrate the API and want a small integration that does not change how the application behaves.</p></div>
-        <div class="card reveal" style="--d:.06s"><h4>LLM providers</h4><p>The suppliers the product depends on for every request. A pricing change, a limit on access or a new competing feature from a large provider can change the conditions quickly. One reason to use several providers is to reduce this dependence.</p></div>
-        <div class="card reveal" style="--d:.12s"><h4>Regulators</h4><p>GDPR and the EU AI Act shape what data can pass through the product and how it can be stored. Where data is processed and whether it is stored affects both the technical design and customer trust.</p></div>
-        <div class="card reveal"><h4>Competitors</h4><p>Companies that offer routing and gateways for LLM APIs compete directly for the same customers. Large cloud providers that build routing into their own platforms are part of this group.</p></div>
-        <div class="card reveal" style="--d:.06s"><h4>Investors</h4><p>Not engaged at the pre-study stage, but they matter for whether the venture can grow beyond a prototype.</p></div>
+        <div class="card reveal"><span class="tag">Customers</span><h4>Two roles in one company</h4><p>Companies that use LLM provider APIs and pay for the tokens. Leadership or the budget owner (a CTO or head of engineering) decides and wants lower, more predictable cost with maintained quality. Developers integrate and want a small change that doesn’t alter how the app behaves.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">LLM providers</span><h4>Suppliers of every request</h4><p>Without their models there is no product. A price change, a limit on access or a competing feature from a large provider can change the conditions quickly. Using several providers reduces this dependence.</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Regulators</span><h4>GDPR and the EU AI Act</h4><p>They shape what data can pass through the product and how it can be stored. Where data is processed and whether it is stored affects both the design and customer trust.</p></div>
+        <div class="card reveal"><span class="tag">Competitors</span><h4>Routing and gateway providers</h4><p>They compete directly for the same customers, including large cloud providers that build routing into their own platforms.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Investors</span><h4>Not yet engaged</h4><p>Not involved at the pre-study stage, but they matter for whether the venture can grow beyond a prototype.</p></div>
+      </div>
+
+      <h3>What the interviews told us</h3>
+      <div class="cards three">
+        <div class="card dk reveal"><span class="tag">Product development</span><h4>A founding engineer at Zaplar</h4><p>Zaplar builds an agentic hotel system on LLM APIs. Routing fits best where one agent handles a mix of easy and hard tasks. But some features need fixed quality, so customers need a way to balance quality and price. That became λ.</p></div>
+        <div class="card dk reveal" style="--d:.06s"><span class="tag">Trust</span><h4>An operations specialist</h4><p>From an AI startup handling sensitive health data: work towards ISO certification, GDPR compliance, 30-day retention, EU hosting and encryption at rest. Also helped with the EU AI Act and a risk-assessment approach based on probability and impact.</p></div>
+        <div class="card dk reveal" style="--d:.12s"><span class="tag">Customer insight</span><h4>A potential customer</h4><p>A B2B product with about ten business users would need roughly 100 million to 1 billion tokens per month. This sized the customer in the financial model.</p></div>
       </div>
     </section>
 
-    <!-- 7 INTERVIEWS -->
-    <section class="ps-sec" id="interviews">
-      <span class="eyebrow">07 · Participatory Design Interviews</span>
-      <h2 class="reveal">Participatory Design Interviews</h2>
-      <h3>Product Development</h3>
-      <p class="reveal">An interview was held with a founding engineer at Zaplar, a Y Combinator startup that builds an agentic hotel system in which several features call LLM APIs. The engineer considered the product highly relevant. The strongest fit was where one agent handles a varied mix of easy and difficult tasks, such as tool calling, natural-language writing, code writing and computational tasks.</p>
-      <p class="reveal">The engineer also pointed to a limit: some functions require a fixed level of output quality, where predictable results matter more than lower cost. The customer therefore needs a way to decide how quality and price are balanced. This is reflected in the router’s λ parameter: a function that needs consistent quality can use a low λ, while simpler high-volume tasks can use a higher one.</p>
-      <h3>Trust</h3>
-      <p class="reveal">The trust and safety approach was developed iteratively with an operations specialist from an AI startup that processes sensitive health-related information. The specialist highlighted working towards the appropriate ISO certification, GDPR compliance, a 30-day retention limit, hosting all data within the EU and encryption at rest. The specialist also helped the team understand the EU AI Act and develop an approach to risk assessment based on probability and impact, and judged that actively working with these factors is adequate to build the trust customers need.</p>
-      <h3>Customer Insight</h3>
-      <p class="reveal">A person at a potential customer company, who remains anonymous, was consulted on how much usage a typical customer would have through LLM provider APIs. It varies a lot with the product and number of users, but a B2B solution with about 10 users (other companies) would need 100 million to 1,000 million tokens per month.</p>
-    </section>
-
-    <!-- 8 RESULT -->
+    <!-- 6 RESULTS -->
     <section class="ps-sec" id="results">
-      <span class="eyebrow">08 · Result</span>
-      <h2 class="reveal">Result</h2>
+      <span class="eyebrow">06 · Results</span>
+      <h2 class="reveal">The research says routing works. Our prototype agrees.</h2>
 
       <h3>Evidence from the routing literature</h3>
       <ul class="bullets">
-        <li class="reveal"><b>Fowler et al. (2026):</b> models were correct on different subsets of tasks. Across 21 LLMs and 16 benchmarks, the oracle scored 88% on average against 82.4% for the strongest fixed model. Matching that model’s score, it cut token costs by 85.2% on average. This supports A3.</li>
-        <li class="reveal"><b>Ong et al. (2025):</b> RouteLLM, routing between GPT-4 and Mixtral 8x7B, kept 95% of GPT-4’s MT-Bench score at an estimated 73% lower cost. Its most expensive router added at most 0.4% of the cost of GPT-4 generation, which supports A4.</li>
-        <li class="reveal"><b>Li et al. (2026):</b> on LLMRouterBench, Avengers-Pro reached at least GPT-5’s average accuracy at 31.7% lower cost, or 4.0% higher accuracy in a quality-first configuration. This is direct evidence for R4.</li>
-        <li class="reveal"><b>Yan et al. (2026):</b> ZeroRouter routes to models outside its original training pool, so the pool can be updated without retraining the whole router.</li>
+        <li class="reveal"><b>Models succeed on different tasks.</b> Across 21 LLMs and 16 benchmarks, an oracle that always picks the right model scored 88% on average, against 82.4% for the strongest fixed model. When it only had to match that model’s score, it cut token costs by 85.2% on average (Fowler et al., 2026).</li>
+        <li class="reveal"><b>The differences are predictable.</b> RouteLLM kept 95% of GPT-4’s MT-Bench score at an estimated 73% lower cost, with routing overhead of at most 0.4% (Ong et al., 2025).</li>
+        <li class="reveal"><b>Routing can beat the best model.</b> Avengers-Pro matched GPT-5’s accuracy at 31.7% lower cost, or reached 4.0% higher accuracy in a quality-first setting (Li et al., 2026).</li>
+        <li class="reveal"><b>New models can be added.</b> ZeroRouter routes to models outside its training pool, so the pool can be updated without retraining (Yan et al., 2026).</li>
       </ul>
 
-      <h3>Proposed product design</h3>
-      <p class="reveal">Lönn is a middleware between customer applications and model providers. Its design connects customer controls, request routing, and evaluation and improvement.</p>
+      <h3>The proposed product</h3>
       <div class="cards three">
-        <div class="card reveal"><h4>Customer controls</h4><p>An API and Python SDK, and a web application with dashboard and settings. The dashboard shows spending forecasts, usage by team, task and model, and estimated savings after service fees. Settings define data-handling policies. Each call can select a saved policy and set the cost-quality balance through lambda.</p></div>
-        <div class="card reveal" style="--d:.06s"><h4>Request routing</h4><p>The router selects the most cost-efficient eligible model and provider given lambda. The selected policy and regularly verified endpoint conditions define the execution pool, and fallback follows the same restrictions. Requests fail when no eligible route remains. Prepaid balances or credit limits constrain exposure to unpaid provider charges.</p></div>
-        <div class="card reveal" style="--d:.12s"><h4>Evaluation and improvement</h4><p>Authorised retained prompts support clustering and analysis of routing behaviour, following customer permissions. Validation must establish comparable answer quality, acceptable latency and net savings after fees and routing overhead.</p></div>
+        <div class="card reveal"><span class="tag">Customer controls</span><h4>API, SDK and web app</h4><p>A dashboard with forecasts, usage by team, task and model, and savings after fees. Saved data policies and a cost-quality setting per call.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Request routing</span><h4>Eligible, cheapest, good enough</h4><p>The chosen data policy and verified endpoint conditions define which models are eligible. Fallback stays within the same limits. Prepaid balances limit credit exposure.</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Evaluation and improvement</span><h4>Learning from traffic</h4><p>Where customers permit it, retained prompts support clustering and analysis of routing behaviour, with separate validation of answer quality.</p></div>
       </div>
 
-      <h3>Lönn router prototype and performance</h3>
-      <p class="reveal">The Lönn Router consists of a classifier, a router and an executor. The classifier identifies the likely task type, the router ranks eight candidate models by expected quality and cost according to the customer’s preference, and the executor calls the selected model and records the cost of each attempt. If a provider call fails, the executor tries the next ranked model. If the output is empty, truncated or fails a code example in the prompt, an output check can trigger one additional call.</p>
+      <h3>The Lönn Router prototype</h3>
+      <p class="reveal">The prototype has three parts: a classifier that identifies the likely task type, a router that ranks the eight models by expected quality and cost, and an executor that calls the chosen model and records the cost. If a call fails, the executor tries the next model. If the output is empty, cut off or fails a code example in the prompt, it makes one extra call.</p>
       <div class="callout reveal">
         <div class="n">−79%</div>
-        <p>The Lönn Router answered <b style="color:#fff">85.8%</b> of the benchmark prompts correctly at a cost of <b style="color:#fff">1.58 USD</b>, against 88.1% at 7.58 USD for always using Claude Sonnet 5.5: about 97% of Sonnet’s accuracy at about a fifth of its cost. With λ = 10 it answered 89.6% correctly at 3.91 USD, higher accuracy than Sonnet at about half the cost.</p>
+        <p>At the default λ = 20, the router answered <b style="color:#fff">85.8%</b> of prompts correctly for <b style="color:#fff">$1.58</b>, against 88.1% for $7.58 when always using Claude Sonnet 5.5. That keeps about 97% of Sonnet’s accuracy at about a fifth of the cost. At λ = 10 it beats Sonnet outright, at about half the cost.</p>
       </div>
       <div class="table-wrap reveal">
         <table>
-          <thead><tr><th>Configuration</th><th class="num">Correct</th><th class="num">Cost (USD)</th><th class="num">Compared with always using Sonnet</th></tr></thead>
+          <thead><tr><th>Configuration</th><th class="num">Correct</th><th class="num">Cost (USD)</th><th class="num">Compared with always Sonnet</th></tr></thead>
           <tbody>
             <tr><td>Lönn Router without answer check, λ = 20</td><td class="num">83.7%</td><td class="num">0.91</td><td class="num">−4.4 points, −88% cost</td></tr>
-            <tr class="hl"><td>Lönn Router, λ = 20</td><td class="num">85.8%</td><td class="num">1.58</td><td class="num">−2.3 points, −79% cost</td></tr>
+            <tr class="hl"><td>Lönn Router, λ = 20 (default)</td><td class="num">85.8%</td><td class="num">1.58</td><td class="num">−2.3 points, −79% cost</td></tr>
             <tr><td>Lönn Router, λ = 10</td><td class="num">89.6%</td><td class="num">3.91</td><td class="num">+1.5 points, −48% cost</td></tr>
             <tr><td>Always Claude Sonnet 5.5</td><td class="num">88.1%</td><td class="num">7.58</td><td class="num">–</td></tr>
-            <tr><td>Oracle</td><td class="num">94.1%</td><td class="num">1.08</td><td class="num">–</td></tr>
+            <tr><td>Oracle (perfect hindsight)</td><td class="num">94.1%</td><td class="num">1.08</td><td class="num">–</td></tr>
           </tbody>
         </table>
       </div>
-      <p class="reveal">These results support assumption A3: a practical router can reduce cost substantially while keeping quality close to, or above, that of a strong model. They apply to the requests in the benchmark. Savings and quality on customer traffic may differ depending on the mix of tasks, costs and quality requirements in each application. <a href="index.html#results">Try the λ dial on the results chart →</a></p>
+      <p class="reveal">This supports assumption A3: a practical router can cut cost substantially while keeping quality close to, or above, a strong model. The results apply to the benchmark; savings and quality on customer traffic may differ with each application’s mix of tasks, costs and quality requirements. <a href="index.html#results">Try the λ dial on the results chart →</a></p>
+    </section>
 
-      <h3>Profitability analysis</h3>
-      <p class="reveal">A financial model was built to find which conditions must hold for the business to be profitable. It is based on the benchmark, assumes customers previously used Claude Sonnet 5.5, and sizes them as described in the customer interview. It consists of an income model, a variable costs model, a fixed costs model and a profit model.</p>
+    <!-- 7 ITERATIONS -->
+    <section class="ps-sec" id="iterations">
+      <span class="eyebrow">07 · How we got there</span>
+      <h2 class="reveal">The earlier iterations, and what each one taught us.</h2>
+      <h3>1. The topic router</h3>
+      <p class="reveal">The first version classified prompts into four broad topics with Laya, an open ModernBERT-based classifier, and scored models with public Arena Elo and list prices. It reached 78.1% for $1.10, but sent 94% of prompts to one model, and knowing the true topic improved it by only 0.5 points.</p>
+      <p class="lesson reveal"><b>Lesson:</b> the routing logic, not the classifier, was the limit. Four topics were too broad, the complexity score barely varied, and list prices predicted real cost poorly.</p>
+      <h3>2. Task types and a measured routing table</h3>
+      <p class="reveal">Switching to 15 task types and measured accuracy and cost matched the topic router’s quality at about a third of the cost (78.9% for $0.40), or gave six points more at a lower cost. A small bge-small classifier, at 34 ms per prompt, came within 0.1 points of using the true task type.</p>
+      <p class="lesson reveal"><b>Lesson:</b> once the logic was right, the classifier was no longer the bottleneck on the benchmark.</p>
+      <h3>3. Everyday prompts</h3>
+      <p class="reveal">Real user prompts from the WildChat dataset look little like benchmark questions. Adding about 3,000 of them to the training data raised task-type accuracy on an everyday test set from 31% to 51%.</p>
+      <p class="lesson reveal"><b>Lesson:</b> benchmark results are optimistic for real traffic, and data from real use is what improves the classifier most.</p>
+      <h3>4. Closing the gap to the oracle</h3>
+      <p class="reveal">With task types the router reached 84% against the oracle’s 94%. Two task types, algorithmic programming and business writing, account for 68% of that gap. Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. What worked was checking the answer: if it is empty, cut off or fails a code example in the prompt, the request is sent once more to the next-best model. Those answers would almost always be graded wrong, so the retry mostly turns failures into passes. At λ = 20 it raised accuracy from 83.7% to 85.8%, at a cost of $1.58 instead of $0.91, and at most of the budgets tested it beat spending the same money on routing alone.</p>
+      <p class="lesson reveal"><b>Lesson:</b> most of the oracle’s lead cannot be predicted from the prompt alone. Checking the answer afterwards recovers part of it.</p>
+    </section>
+
+    <!-- 8 PROFITABILITY -->
+    <section class="ps-sec" id="profitability">
+      <span class="eyebrow">08 · Profitability</span>
+      <h2 class="reveal">Break-even at roughly two customers.</h2>
+      <p class="reveal">The financial model assumes customers previously used Claude Sonnet 5.5, sizes them from the customer interview, and splits Lönn’s finances into income, variable costs, fixed costs and profit. Lönn charges 20% of what each customer saves, paid through prepaid credits.</p>
       <div class="cards four">
-        <div class="card reveal"><span class="tag">Income</span><h4 style="font-size:30px">0.759</h4><p>USD per routed USD of AI spend, from a service fee of 20% of the customer’s savings, paid with prepaid credits</p></div>
-        <div class="card reveal" style="--d:.06s"><span class="tag">Variable costs</span><h4 style="font-size:30px">0.047</h4><p>USD per routed USD, mostly payment-provider and conversion fees</p></div>
-        <div class="card reveal" style="--d:.12s"><span class="tag">Fixed costs</span><h4 style="font-size:30px">421<small style="font-size:15px;font-weight:500"> USD/month</small></h4><p>hosting, development tools and administration, plus 241 USD one-time. Earlier development costs are treated as sunk.</p></div>
-        <div class="card dk reveal" style="--d:.18s"><span class="tag">Profit</span><h4 style="font-size:30px">93.8%</h4><p>contribution margin, or 0.713 USD per routed USD. Break-even at 592 routed USD per month, roughly 2 customers.</p></div>
+        <div class="card reveal"><span class="tag">Fee</span><h4 style="font-size:30px" data-count="20" data-suf="%">20%</h4><p>of the customer’s savings</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Contribution margin</span><h4 style="font-size:30px" data-count="93.8" data-dec="1" data-suf="%">93.8%</h4><p>after payment and conversion fees</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Fixed costs</span><h4 style="font-size:30px">$421<small style="font-size:15px;font-weight:500">/mo</small></h4><p>hosting, tools and admin, plus $241 one-time</p></div>
+        <div class="card dk reveal" style="--d:.18s"><span class="tag">Break-even</span><h4 style="font-size:30px">≈ 2</h4><p>customers of the interviewed size</p></div>
       </div>
+      <ul class="bullets">
+        <li class="reveal"><b>For the customer:</b> at λ = 20, AI spend falls by 63.3% after the service fee, for the assumed typical customer.</li>
+        <li class="reveal"><b>For Lönn:</b> the fee gives 0.759 USD of income per USD routed, and 0.713 USD after variable costs. Break-even is at 592 USD of routed AI spend per month.</li>
+      </ul>
     </section>
 
     <!-- 9 DISCUSSION -->
     <section class="ps-sec" id="discussion">
       <span class="eyebrow">09 · Discussion</span>
-      <h2 class="reveal">Discussion</h2>
-
-      <h3>Business requirements (R1–R3): partially met</h3>
-      <p class="reveal">Based on the benchmark, the router delivers clear financial value: at λ = 20 it cuts AI spend by 63.3% after the service fee, for the assumed typical customer. The 20% fee on savings, combined with prepaid usage credits, gives profitability after only 2 assumed typical customers while removing most credit risk. λ gives the customer direct control over the balance between cost and quality, which the Zaplar interview confirmed the need for, and the designed dashboard gives usage breakdowns and a single point of billing across all providers.</p>
-      <p class="reveal">The requirements are only partly met because the evidence comes from the benchmark and individual interviews. The savings are calculated for an assumed typical customer, no customer has yet been asked whether they would accept the fee, and the size of the savings depends on the customer’s mix of tasks.</p>
-
-      <h3>Technical requirements (R4–R5): met on the benchmark</h3>
-      <p class="reveal">On the benchmark the router keeps about 97% of Claude Sonnet 5.5’s accuracy at about a fifth of its cost at λ = 20 (before the service fee), and at λ = 10 it answers more prompts correctly than Sonnet at about half the cost. The classifier takes 34 ms per prompt on an ordinary CPU, so the router’s own overhead is negligible compared with the savings. This supports A3 and A4 and agrees with RouteLLM and Avengers-Pro.</p>
-      <p class="reveal">The prototype falls back to the next model when a provider call fails, and the routing table can be rebuilt when prices change. Adding a new model, however, currently requires running it through the full benchmark, and fallback has not been tested under realistic load.</p>
-      <p class="reveal">There are two main reservations. The dataset is limited to 690 prompts with one stored answer per model, and the benchmark consists of exam-style questions, which differ from the prompts customers send. Even so, the difference compared with always using Sonnet is large across the whole range of λ, a strong enough signal that the requirements can be met in practice. Latency for escalated requests, the effect of model switching on caching, and a better pipeline for onboarding new models are left for further work.</p>
-      <h4 class="sub">Supplier risk</h4>
-      <p class="reveal">In Lönn AI’s set-up the provider becomes interchangeable, and the customer may not know which model answered. A provider that sees this as a loss of brand recognition or customer relationships can raise prices or restrict access. Anthropic cutting Windsurf’s access to Claude in 2025 (Zeff, 2025), and Anthropic acting as both Cursor’s supplier and competitor (Garfinkle, 2026), show that this happens. A pool spread across several providers reduces the risk, but losing access to the strongest models would lower the value of the whole product.</p>
-
-      <h3>Trust requirements</h3>
-      <p class="reveal">The policies and documentation behind the trust and safety requirements have been discussed and planned with the operations specialist, but not developed in practice, so carrying them out becomes a roadmap item. The specialist especially highlighted EU hosting, GDPR compliance, encryption, a 30-day data retention limit and working towards the relevant ISO certification.</p>
-      <p class="reveal">Data security also comes as a trade-off against savings. With stricter data-processing requirements, fewer providers are available in the model pool and several of the cheaper models might be excluded. Customers with very strict requirements might therefore get significantly lower savings than the benchmark suggests.</p>
+      <h2 class="reveal">Did the pre-study meet its own requirements?</h2>
+      <p class="reveal">The discussion goes back to the requirements set at the start and weighs the evidence for each group.</p>
+      <div class="cards three">
+        <div class="card reveal">
+          <span class="tag">Business · R1–R3</span>
+          <h4>Partially met</h4>
+          <p>On the benchmark the router gives clear financial value: 63.3% lower AI spend after the fee at λ = 20. The 20% fee with prepaid credits reaches profitability at about two typical customers and removes most credit risk. λ gives control, and the dashboard is designed to give visibility.</p>
+          <p style="margin-top:10px"><b>Why only partially:</b> the evidence is a benchmark and single interviews. No customer has yet been asked whether they would pay the fee, and savings depend on each customer’s mix of tasks.</p>
+        </div>
+        <div class="card reveal" style="--d:.06s">
+          <span class="tag">Technical · R4–R5</span>
+          <h4>Met on the benchmark</h4>
+          <p>About 97% of Sonnet’s accuracy at about a fifth of its cost at λ = 20, and higher accuracy at about half the cost at λ = 10. The classifier takes 34 ms, so the router’s own overhead is negligible. The prototype falls back when a provider call fails, and the routing table can be rebuilt when prices change.</p>
+          <p style="margin-top:10px"><b>Reservations:</b> only 690 prompts with one stored answer per model, and exam-style questions rather than real customer prompts. A new model must run the full benchmark, and fallback is untested under realistic load.</p>
+        </div>
+        <div class="card reveal" style="--d:.12s">
+          <span class="tag">Trust and safety · R6–R7</span>
+          <h4>Planned, not yet built</h4>
+          <p>The data-handling settings, security controls and documentation were discussed and planned with an operations specialist at an AI startup that handles sensitive health data, but not developed in practice. Building them is a roadmap item.</p>
+          <p style="margin-top:10px"><b>Priorities named:</b> EU hosting, GDPR compliance, encryption, a 30-day retention limit and working towards ISO certification.</p>
+        </div>
+      </div>
+      <h3>Two risks the discussion raises</h3>
+      <ul class="bullets">
+        <li class="reveal"><b>Supplier risk.</b> With Lönn the provider becomes interchangeable, and the customer may not know which model answered. A provider that sees this as lost brand recognition or customer relationships can raise prices or restrict access, as when Anthropic cut Windsurf’s access to Claude in 2025 (Zeff, 2025). A pool spread across several providers reduces the risk, but losing the strongest models would lower the value of the whole product.</li>
+        <li class="reveal"><b>Security against savings.</b> Stricter data-processing requirements leave fewer eligible providers, and several of the cheaper models may be excluded. Customers with very strict requirements may save much less than the benchmark suggests.</li>
+      </ul>
+      <p class="reveal">Even with these reservations, the gap to always using Sonnet is large across the whole range of λ, which the report takes as a strong signal that the technical requirements can be met in practice.</p>
     </section>
 
     <!-- 10 ROADMAP -->
     <section class="ps-sec" id="roadmap">
       <span class="eyebrow">10 · Roadmap</span>
-      <h2 class="reveal">Roadmap</h2>
-      <h3>Technical Roadmap</h3>
-      <ul class="bullets">
-        <li class="reveal"><b>Model routing:</b> make it easy to onboard new models without retraining the whole system, with capability vectors learned from observed performance. A small set of shared anchor tasks could support this.</li>
-        <li class="reveal"><b>Evaluation:</b> broader, representative data and repeatable tests to establish whether routing preserves quality while reducing total cost at acceptable latency.</li>
-        <li class="reveal"><b>Trust and data handling:</b> customer policies enforced across Lönn and downstream providers, ongoing verification of provider conditions, and implemented security controls and procedures.</li>
-        <li class="reveal"><b>Reliable execution:</b> provider integrations, failure handling, fallback and monitoring developed and tested under realistic workloads.</li>
-        <li class="reveal"><b>Customer controls and integration:</b> the API, Python SDK and web application must connect each request with its cost-quality preference and saved data policy.</li>
-        <li class="reveal"><b>Metering and billing:</b> accurate usage tracking, current provider prices and payment controls, with prepaid balances or credit limits enforced technically.</li>
-        <li class="reveal"><b>Caching and session memory:</b> assess how model switching affects KV caching and session memory, and count lost caching benefits when estimating savings.</li>
-        <li class="reveal"><b>Prompt and reasoning optimisation:</b> prompt compression, prompt engineering and reasoning limits as further ways to reduce tokens, validated against answer quality.</li>
-      </ul>
-      <h3>Business Roadmap</h3>
-      <p class="reveal">The business roadmap is a plan of action rather than a schedule. It sets out the order in which Lönn AI moves from a prototype to a product that anyone can use.</p>
+      <h2 class="reveal">A plan of action, not a schedule.</h2>
       <ol class="steps-list">
-        <li class="reveal"><div><b>Find initial partners</b><span>Recruit a small number of companies that rely on LLM APIs in their products, for example AI-heavy startups in Stockholm such as Legora or Lovable, or growing AI startups such as Zaplar. Partners pay only the underlying model costs. In return they share usage data on agreed terms, give feedback and allow Lönn AI to name them as partners.</span></div></li>
-        <li class="reveal"><div><b>Run pilots</b><span>Collect usage data from real traffic, learn what customers need, verify the product under real conditions and build credibility. Each pilot starts in shadow mode, where the router only records which model it would have chosen, before it gradually takes over real traffic.</span></div></li>
-        <li class="reveal"><div><b>Prepare for launch</b><span>Build the data and insights from the pilots into the product. Partners move to the standard pricing model and become the first paying customers.</span></div></li>
-        <li class="reveal"><div><b>Go live</b><span>Any company can create an account, receive a Lönn AI API key and route its requests. Reaching break-even, at roughly two customers, is the first commercial milestone.</span></div></li>
-        <li class="reveal"><div><b>Grow after launch</b><span>Use the partners as references to win similar customers, and the growing usage data to keep improving the router.</span></div></li>
+        <li class="reveal"><div><b>Find initial partners</b><span>A small number of companies that rely on LLM APIs in their products, for example AI-heavy startups in Stockholm such as Legora or Lovable, or growing startups such as Zaplar. Pilot partners pay only model costs. In return they share usage data on agreed terms, give feedback and let Lönn name them as partners.</span></div></li>
+        <li class="reveal"><div><b>Run pilots</b><span>Start in shadow mode, where the router only records what it would have chosen, then gradually take over real traffic.</span></div></li>
+        <li class="reveal"><div><b>Prepare for launch</b><span>Build the pilot data and insights into the product. Partners move to standard pricing as the first paying customers.</span></div></li>
+        <li class="reveal"><div><b>Go live</b><span>Any company can create an account, get a Lönn API key and route its requests. Break-even is the first commercial milestone.</span></div></li>
+        <li class="reveal"><div><b>Grow after launch</b><span>Use partners as references and growing usage data to keep improving the router.</span></div></li>
       </ol>
+      <h3>Technical next steps</h3>
+      <ul class="bullets">
+        <li class="reveal"><b>Model routing:</b> onboard new models without retraining the whole system, with capability vectors learned from observed performance.</li>
+        <li class="reveal"><b>Evaluation:</b> broader, representative data and repeatable tests of quality, total cost and latency.</li>
+        <li class="reveal"><b>Trust and data handling:</b> customer policies enforced across Lönn and downstream providers, with ongoing verification.</li>
+        <li class="reveal"><b>Reliable execution:</b> provider integrations, fallback and monitoring tested under realistic workloads.</li>
+        <li class="reveal"><b>Customer controls and integration:</b> the API, Python SDK and web app, connecting each request to its cost-quality preference and data policy.</li>
+        <li class="reveal"><b>Metering and billing:</b> accurate usage tracking, current prices, and prepaid balances or credit limits.</li>
+        <li class="reveal"><b>Caching and session memory:</b> how model switching affects caching and conversation context, and what that costs.</li>
+        <li class="reveal"><b>Prompt and reasoning optimisation:</b> prompt compression and reasoning limits to cut tokens, validated against answer quality.</li>
+      </ul>
     </section>
 
-    <!-- APPENDIX -->
-    <section class="ps-sec" id="appendix">
-      <span class="eyebrow">Appendix</span>
-      <h2 class="reveal">Appendix</h2>
-
-      <h3>Disclosure of AI Use</h3>
-      <p class="reveal">AI has been used in accordance with the guidelines given by the course examiners, always with a human driving the work process. It has been used to reformulate parts of the text to improve grammar and flow, to assist in building the Excel workbook, and for coding.</p>
-
-      <h3>Earlier Iterations</h3>
-      <h4 class="sub">A1. Topic router</h4>
-      <p class="reveal">The first iterations assumed a router can choose well if it knows what a prompt is about and how hard it is. Laya, an open classifier based on ModernBERT, assigned each prompt to one of four topics and estimated its complexity. Models were scored with public Arena Elo and list prices. Replayed on the benchmark, the topic router reached 78.1% at 1.10 USD. It sent 94% of prompts to one model, DeepSeek V4.1 Flash, and even the true topic of every prompt improved it by only 0.5 points.</p>
-      <p class="lesson reveal"><b>Lesson:</b> the routing logic, not the classifier, was the limitation. The complexity score varied too little, four topics were too broad, and list prices predicted actual cost poorly.</p>
-      <h4 class="sub">A2. Task-type routing and the classifier</h4>
-      <p class="reveal">With the true task type of every prompt, the new logic matched the topic router’s quality at about a third of the cost (78.9% at 0.40 USD with λ = 80), or gave six points more at lower cost (84.1% at 0.93 USD with λ = 20). The classifier was then chosen by comparison, with a limit of 200 ms per prompt on a CPU. The smallest candidate, bge-small with a linear layer, took 34 ms and brought the router within 0.1 points of the upper bound.</p>
-      <p class="lesson reveal"><b>Lesson:</b> once the routing logic was right, the classifier was no longer the bottleneck on the benchmark.</p>
-      <p class="reveal">Everyday prompts look little like benchmark questions. On 300 labelled real user prompts from the WildChat dataset, the classifier got 31% of task types right. Adding about 3,000 other WildChat prompts to the training data raised this to 51%.</p>
-      <p class="lesson reveal"><b>Lesson:</b> benchmark results are optimistic for real traffic, and data from real use is what improves the classifier most.</p>
-      <h4 class="sub">A3. Strategies tested against the gap to the oracle</h4>
-      <p class="reveal">With task types, the router reached 84% against the oracle’s 94%. Of this gap, 68% lies in two task types, algorithmic programming and business writing. Using complexity, requiring two cheap models to agree, and letting a cheap model judge writing were tested and not kept. Checking the answer and escalating at most once was kept; the report finds it equal or better at every budget, by up to 1.9 points.</p>
-      <div class="table-wrap reveal">
-        <table class="tight">
-          <thead><tr><th>Budget for 690 prompts (USD)</th><th class="num">0.40</th><th class="num">0.75</th><th class="num">1.00</th><th class="num">1.50</th><th class="num">2.00</th><th class="num">3.00</th></tr></thead>
-          <tbody>
-            <tr><td>Router</td><td class="num">79.1%</td><td class="num">81.6%</td><td class="num">83.9%</td><td class="num">84.6%</td><td class="num">85.3%</td><td class="num">87.3%</td></tr>
-            <tr class="hl"><td>Router + answer check</td><td class="num">80.7%</td><td class="num">82.3%</td><td class="num">83.8%</td><td class="num">85.7%</td><td class="num">86.9%</td><td class="num">89.0%</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="lesson reveal"><b>Lesson:</b> most of the oracle’s lead cannot be predicted from the prompt alone. Checking the answer after the fact captures part of it, at the cost of a second call for a small share of requests.</p>
-      <h4 class="sub">A4. Effect of λ on the Lönn Router</h4>
-      <div class="table-wrap reveal">
-        <table class="tight">
-          <thead><tr><th>λ</th><th class="num">Correct</th><th class="num">Cost (USD)</th><th class="num">Compared with always using Sonnet</th><th class="num">Escalated</th></tr></thead>
-          <tbody>
-            <tr><td>0</td><td class="num">89.0%</td><td class="num">6.90</td><td class="num">+0.9 points, −9% cost</td><td class="num">3%</td></tr>
-            <tr><td>10</td><td class="num">89.6%</td><td class="num">3.91</td><td class="num">+1.5 points, −48% cost</td><td class="num">6%</td></tr>
-            <tr class="hl"><td>20 (default)</td><td class="num">85.8%</td><td class="num">1.58</td><td class="num">−2.3 points, −79% cost</td><td class="num">8%</td></tr>
-            <tr><td>30</td><td class="num">84.0%</td><td class="num">1.00</td><td class="num">−4.2 points, −87% cost</td><td class="num">9%</td></tr>
-            <tr><td>40</td><td class="num">82.3%</td><td class="num">0.82</td><td class="num">−5.8 points, −89% cost</td><td class="num">9%</td></tr>
-            <tr><td>50</td><td class="num">81.4%</td><td class="num">0.63</td><td class="num">−6.7 points, −92% cost</td><td class="num">9%</td></tr>
-            <tr><td>60</td><td class="num">81.2%</td><td class="num">0.53</td><td class="num">−7.0 points, −93% cost</td><td class="num">8%</td></tr>
-            <tr><td>70</td><td class="num">81.0%</td><td class="num">0.48</td><td class="num">−7.1 points, −94% cost</td><td class="num">7%</td></tr>
-            <tr><td>80</td><td class="num">80.7%</td><td class="num">0.44</td><td class="num">−7.4 points, −94% cost</td><td class="num">7%</td></tr>
-            <tr><td>90</td><td class="num">80.6%</td><td class="num">0.42</td><td class="num">−7.5 points, −94% cost</td><td class="num">7%</td></tr>
-            <tr><td>100</td><td class="num">80.3%</td><td class="num">0.39</td><td class="num">−7.9 points, −95% cost</td><td class="num">7%</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="reveal">At λ = 10 the router answers more prompts correctly than always using Sonnet, at about half the cost. Above λ = 50, raising λ lowers cost only slightly while quality keeps falling.</p>
-
-      <h3>Financial Model</h3>
-      <p class="reveal">The full spreadsheet model is in the report. Its case customer uses 500 million tokens per month, which would cost 2,000 USD per month on Claude Sonnet 5.5 and 417 USD per month through the router, before the service fee.</p>
-
+    <!-- 11 ABOUT -->
+    <section class="ps-sec" id="about">
+      <span class="eyebrow">11 · About the report</span>
+      <h2 class="reveal">How the report was made, and by whom.</h2>
+      <h3>Use of AI</h3>
+      <p class="reveal">AI was used in line with the course examiners’ guidelines, always as a tool with a human driving the work: to reformulate parts of the text for grammar and flow, to help build the Excel workbook for the financial model, and for coding.</p>
       <h3>The team</h3>
       <div class="team">
         <a href="mailto:jbrismar@kth.se">jbrismar@kth.se</a><a href="mailto:erikmall@kth.se">erikmall@kth.se</a><a href="mailto:spiik@kth.se">spiik@kth.se</a><a href="mailto:noaw@kth.se">noaw@kth.se</a><a href="mailto:hestra@kth.se">hestra@kth.se</a>
@@ -452,6 +392,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202611102027"></script>
+<script src="assets/js/main.js?v=202611102032"></script>
 </body>
 </html>
