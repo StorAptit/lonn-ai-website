@@ -435,3 +435,8 @@ h1,h2,h3{overflow-wrap:break-word}
 .bench-note{margin-top:56px;padding:28px 30px;border:1px solid var(--line);border-radius:16px;background:#fff;display:flex;gap:30px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .bench-note p{max-width:640px;color:var(--muted);font-size:16.5px}
 .bench-note .btn{flex:none}
+/* tables: let headers and the first column wrap so nothing needs sideways scrolling */
+th{white-space:normal;vertical-align:bottom;line-height:1.35}
+td:first-child{white-space:normal}
+@media (max-width:760px){th,td{padding:11px 10px;font-size:13.5px}th{font-size:11px;letter-spacing:.03em}}
+@media (max-width:760px){td{white-space:normal}td.wrapcell,.wraptable td.wrapcell{min-width:0}.wraptable td:first-child{width:auto}td.num{white-space:normal}}
