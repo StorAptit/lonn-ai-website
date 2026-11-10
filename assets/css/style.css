@@ -440,3 +440,11 @@ th{white-space:normal;vertical-align:bottom;line-height:1.35}
 td:first-child{white-space:normal}
 @media (max-width:760px){th,td{padding:11px 10px;font-size:13.5px}th{font-size:11px;letter-spacing:.03em}}
 @media (max-width:760px){td{white-space:normal}td.wrapcell,.wraptable td.wrapcell{min-width:0}.wraptable td:first-child{width:auto}td.num{white-space:normal}}
+/* pre-study: sub-headings and definitions list */
+.ps-sec h4.sub{font-size:17px;margin:28px 0 8px;color:var(--moss)}
+.defs{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin:8px 0 0;max-width:none}
+.defs > div{padding:14px 0;border-bottom:1px solid var(--line);break-inside:avoid}
+.defs dt{font-weight:700;font-size:15.5px}
+.defs dd{margin:4px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
+@media (max-width:760px){.defs{grid-template-columns:1fr}}
+@media (max-width:760px){table.tight th,table.tight td{padding:9px 5px;font-size:12px}table.tight th{font-size:9.5px;letter-spacing:0}table.tight td:first-child,table.tight th:first-child{padding-left:10px}table.tight td:last-child,table.tight th:last-child{padding-right:10px}}
