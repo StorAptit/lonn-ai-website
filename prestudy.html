@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202611102009">
+<link rel="stylesheet" href="assets/css/style.css?v=202611102012">
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
@@ -60,6 +60,7 @@
       <li><a href="#results">Results</a></li>
       <li><a href="#iterations">How we got there</a></li>
       <li><a href="#profitability">Profitability</a></li>
+      <li><a href="#discussion">Discussion</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#limits">Limitations</a></li>
     </ol>
@@ -228,7 +229,7 @@
 
       <h3>Evidence from the routing literature</h3>
       <ul class="bullets">
-        <li class="reveal"><b>Models succeed on different tasks.</b> Across 21 LLMs and 16 benchmarks, an oracle matching the strongest fixed model’s score cut token costs by 85.2% on average (Fowler et al., 2026).</li>
+        <li class="reveal"><b>Models succeed on different tasks.</b> Across 21 LLMs and 16 benchmarks, an oracle that always picks the right model scored 88% on average, against 82.4% for the strongest fixed model. When it only had to match that model’s score, it cut token costs by 85.2% on average (Fowler et al., 2026).</li>
         <li class="reveal"><b>The differences are predictable.</b> RouteLLM kept 95% of GPT-4’s MT-Bench score at an estimated 73% lower cost, with routing overhead of at most 0.4% (Ong et al., 2025).</li>
         <li class="reveal"><b>Routing can beat the best model.</b> Avengers-Pro matched GPT-5’s accuracy at 31.7% lower cost, or reached 4.0% higher accuracy in a quality-first setting (Li et al., 2026).</li>
         <li class="reveal"><b>New models can be added.</b> ZeroRouter routes to models outside its training pool, so the pool can be updated without retraining (Yan et al., 2026).</li>
@@ -291,12 +292,48 @@
         <div class="card reveal" style="--d:.12s"><span class="tag">Fixed costs</span><h4 style="font-size:30px">$421<small style="font-size:15px;font-weight:500">/mo</small></h4><p>hosting, tools and admin, plus $241 one-time</p></div>
         <div class="card dk reveal" style="--d:.18s"><span class="tag">Break-even</span><h4 style="font-size:30px">≈ 2</h4><p>customers of the interviewed size</p></div>
       </div>
-      <p class="note reveal">The profitability figures are preliminary and will be updated in the final report.</p>
+      <ul class="bullets">
+        <li class="reveal"><b>For the customer:</b> at λ = 20, AI spend falls by 63.3% after the service fee, for the assumed typical customer.</li>
+        <li class="reveal"><b>For Lönn:</b> the fee gives 0.759 USD of income per USD routed, and 0.713 USD after variable costs. Break-even is at 592 USD of routed AI spend per month.</li>
+      </ul>
     </section>
 
-    <!-- 9 ROADMAP -->
+    <!-- 9 DISCUSSION -->
+    <section class="ps-sec" id="discussion">
+      <span class="eyebrow">09 · Discussion</span>
+      <h2 class="reveal">Did the pre-study meet its own requirements?</h2>
+      <p class="reveal">The discussion goes back to the requirements set at the start and weighs the evidence for each group.</p>
+      <div class="cards three">
+        <div class="card reveal">
+          <span class="tag">Business · R1–R3</span>
+          <h4>Partially met</h4>
+          <p>On the benchmark the router gives clear financial value: 63.3% lower AI spend after the fee at λ = 20. The 20% fee with prepaid credits reaches profitability at about two typical customers and removes most credit risk. λ gives control, and the dashboard is designed to give visibility.</p>
+          <p style="margin-top:10px"><b>Why only partially:</b> the evidence is a benchmark and single interviews. No customer has yet been asked whether they would pay the fee, and savings depend on each customer’s mix of tasks.</p>
+        </div>
+        <div class="card reveal" style="--d:.06s">
+          <span class="tag">Technical · R4–R5</span>
+          <h4>Met on the benchmark</h4>
+          <p>About 97% of Sonnet’s accuracy at about a fifth of its cost at λ = 20, and higher accuracy at about half the cost at λ = 10. The classifier takes 34 ms, so the router’s own overhead is negligible. The prototype falls back when a provider call fails, and the routing table can be rebuilt when prices change.</p>
+          <p style="margin-top:10px"><b>Reservations:</b> only 690 prompts with one stored answer per model, and exam-style questions rather than real customer prompts. A new model must run the full benchmark, and fallback is untested under realistic load.</p>
+        </div>
+        <div class="card reveal" style="--d:.12s">
+          <span class="tag">Trust and safety · R6–R7</span>
+          <h4>Planned, not yet built</h4>
+          <p>The data-handling settings, security controls and documentation were discussed and planned with an operations specialist at an AI startup that handles sensitive health data, but not developed in practice. Building them is a roadmap item.</p>
+          <p style="margin-top:10px"><b>Priorities named:</b> EU hosting, GDPR compliance, encryption, a 30-day retention limit and working towards ISO certification.</p>
+        </div>
+      </div>
+      <h3>Two risks the discussion raises</h3>
+      <ul class="bullets">
+        <li class="reveal"><b>Supplier risk.</b> With Lönn the provider becomes interchangeable, and the customer may not know which model answered. A provider that sees this as lost brand recognition or customer relationships can raise prices or restrict access, as when Anthropic cut Windsurf’s access to Claude in 2025 (Zeff, 2025). A pool spread across several providers reduces the risk, but losing the strongest models would lower the value of the whole product.</li>
+        <li class="reveal"><b>Security against savings.</b> Stricter data-processing requirements leave fewer eligible providers, and several of the cheaper models may be excluded. Customers with very strict requirements may save much less than the benchmark suggests.</li>
+      </ul>
+      <p class="reveal">Even with these reservations, the gap to always using Sonnet is large across the whole range of λ, which the report takes as a strong signal that the technical requirements can be met in practice.</p>
+    </section>
+
+    <!-- 10 ROADMAP -->
     <section class="ps-sec" id="roadmap">
-      <span class="eyebrow">09 · Roadmap</span>
+      <span class="eyebrow">10 · Roadmap</span>
       <h2 class="reveal">A plan of action, not a schedule.</h2>
       <ol class="steps-list">
         <li class="reveal"><div><b>Find initial partners</b><span>AI-heavy companies such as Stockholm startups that rely on LLM APIs. Pilot partners pay only model costs, and share usage data and feedback in return.</span></div></li>
@@ -316,9 +353,9 @@
       </ul>
     </section>
 
-    <!-- 10 LIMITS -->
+    <!-- 11 LIMITS -->
     <section class="ps-sec" id="limits">
-      <span class="eyebrow">10 · Limitations</span>
+      <span class="eyebrow">11 · Limitations</span>
       <h2 class="reveal">What the results do and don’t show.</h2>
       <ul class="bullets">
         <li class="reveal">All results are measured on a 690-prompt benchmark, not real customer traffic. Savings and quality will depend on each application’s mix of tasks.</li>
@@ -355,6 +392,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202611102009"></script>
+<script src="assets/js/main.js?v=202611102012"></script>
 </body>
 </html>
