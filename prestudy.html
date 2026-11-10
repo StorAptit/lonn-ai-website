@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202611102012">
+<link rel="stylesheet" href="assets/css/style.css?v=202611102019">
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
@@ -62,7 +62,7 @@
       <li><a href="#profitability">Profitability</a></li>
       <li><a href="#discussion">Discussion</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
-      <li><a href="#limits">Limitations</a></li>
+      <li><a href="#about">About the report</a></li>
     </ol>
   </aside>
 
@@ -116,7 +116,7 @@
       <h2 class="reveal">An iterative feasibility study, with one method per assumption.</h2>
       <p class="reveal">The team listed the technical, business and trust assumptions the service depends on and chose a way to test each. Findings from one activity fed the next: stakeholder feedback shaped which routing decisions customers control, prototype comparisons guided the routing logic, and the measured cost difference fed the financial model.</p>
       <div class="cards">
-        <div class="card reveal"><span class="tag">Literature &amp; market</span><h4>Routing research and competitors</h4><p>Do models succeed on different requests, can a router predict which one to use, and can new models be added without retraining? Competitors compared by customers, routing, controls and pricing.</p></div>
+        <div class="card reveal"><span class="tag">Literature &amp; market</span><h4>Routing research and competitors</h4><p>Do models succeed on different requests, can a router predict which one to use, and can new models be added without retraining? Competitors compared by customers, routing, controls and pricing. Provider documentation reviewed for processing location, retention and training use.</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">Participatory design</span><h4>Three consultations</h4><p>A founding engineer at a YC-backed startup, an operations specialist in sensitive data handling, and a potential customer on expected token volumes.</p></div>
         <div class="card reveal"><span class="tag">Prototype</span><h4>Benchmark evaluation</h4><p>Routing strategies replayed against stored outputs from every model, so versions can be compared on identical requests with a known grade and cost.</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">Financial</span><h4>Profitability model</h4><p>Gross savings from the benchmark, the proposed fee, variable and fixed costs, and break-even expressed in customers.</p></div>
@@ -160,13 +160,13 @@
           <span class="tag">Business</span>
           <h4>Value that can be captured</h4>
           <p><b>A1</b> API costs are high enough that routing creates real savings and transparency.<br><b>A2</b> Part of that value can be captured with pricing customers accept.</p>
-          <p style="margin-top:10px"><b>R1–R3</b> Measurable value after fees; visibility and control over spend; a pricing and payment model that limits credit risk towards providers.</p>
+          <p style="margin-top:10px"><b>R1–R3</b> Measurable value after fees; visibility and control over spend, with usage breakdowns, forecasts and routing preferences; a pricing and payment model that captures a profitable share of the savings and limits credit risk towards providers.</p>
         </div>
         <div class="card reveal" style="--d:.06s">
           <span class="tag">Technical</span>
           <h4>Predictable strengths</h4>
-          <p><b>A3</b> Models have complementary strengths that are predictable enough for per-request selection to beat any single model.<br><b>A4</b> Routing adds little cost and latency.</p>
-          <p style="margin-top:10px"><b>R4–R5</b> Lower cost at comparable quality and latency; automatic fallback and modular updates as models and prices change.</p>
+          <p><b>A3</b> Models have complementary strengths that are predictable enough for per-request selection to give a better cost-quality trade-off than one fixed model, and they can be re-estimated as models enter or leave the pool.<br><b>A4</b> Routing adds little cost and latency.</p>
+          <p style="margin-top:10px"><b>R4–R5</b> Lower cost at comparable quality and acceptable latency, with minimal integration effort; automatic fallback and modular updates as models and prices change.</p>
         </div>
         <div class="card reveal" style="--d:.12s">
           <span class="tag">Trust and safety</span>
@@ -175,7 +175,7 @@
           <p style="margin-top:10px"><b>R6–R7</b> Settings for processing location, retention and training use, including zero data retention; security controls, agreements and documented procedures.</p>
         </div>
       </div>
-      <p class="reveal">On trust, Lönn matches each customer’s settings against verified provider endpoint conditions to decide which models are eligible for a request, and re-checks those conditions over time. ISO/IEC 27001 certification is optional, so the initial approach relies on documented controls, processing agreements and implementation evidence.</p>
+      <p class="reveal">On trust, Lönn matches each customer’s settings against verified provider endpoint conditions to decide which models are eligible for a request, and re-checks those conditions periodically and after relevant changes. ISO/IEC 27001 certification is optional, so the initial approach relies on documented controls, processing agreements and implementation evidence. Whether customers accept this level of assurance is still an assumption to validate.</p>
     </section>
 
     <!-- 4 MARKET -->
@@ -199,25 +199,27 @@
           </tbody>
         </table>
       </div>
+      <p class="reveal">Lönn mainly targets the multi-model routing segment. The adjacent segments still matter: as cloud platforms and enterprise gateways add models and routing features, they could overlap more with it.</p>
       <h3>Positioning</h3>
-      <p class="reveal">Lönn sits between the broad model access of OpenRouter and the research-driven routing of Martian. The goal is not hundreds of possible routes but better decisions across a small, carefully chosen set of models and providers, acting as a dynamic optimisation layer that keeps adjusting as prices and models change.</p>
+      <p class="reveal">Lönn should be positioned between the broad model access of platforms such as OpenRouter and the more intelligence-driven routing of companies such as Martian. The aim is not to compete on the number of models and providers, but to make better decisions across a diverse and complementary set of them, with cost-efficient inference that keeps output quality. As a dynamic optimisation layer that keeps adjusting as prices and models change, it can also give customers more stable quality and more predictable spending.</p>
     </section>
 
     <!-- 5 STAKEHOLDERS -->
     <section class="ps-sec" id="stakeholders">
       <span class="eyebrow">05 · Stakeholders and interviews</span>
-      <h2 class="reveal">Two people inside every customer, and three conversations that shaped the product.</h2>
-      <div class="cards">
-        <div class="card reveal"><span class="tag">Primary</span><h4>Customers</h4><p>Companies that pay for LLM tokens. The budget owner (CTO, head of engineering) decides and wants lower, predictable cost. Developers integrate and want a small change that doesn’t alter app behaviour.</p></div>
-        <div class="card reveal" style="--d:.06s"><span class="tag">Primary</span><h4>LLM providers</h4><p>Suppliers of every answer, and increasingly competitors as they build their own cost features. Working with several providers reduces dependence on any one.</p></div>
-        <div class="card reveal"><span class="tag">Secondary</span><h4>Regulators</h4><p>GDPR and the EU AI Act shape what data can pass through the product and how it may be stored.</p></div>
-        <div class="card reveal" style="--d:.06s"><span class="tag">Secondary</span><h4>Competitors and investors</h4><p>Routing and gateway providers compete for the same customers. Investors will look for real savings, real customers and a product that is hard to copy.</p></div>
+      <h2 class="reveal">Five stakeholder groups, and three conversations that shaped the product.</h2>
+      <div class="cards three">
+        <div class="card reveal"><span class="tag">Customers</span><h4>Two roles in one company</h4><p>Companies that use LLM provider APIs and pay for the tokens. Leadership or the budget owner (a CTO or head of engineering) decides and wants lower, more predictable cost with maintained quality. Developers integrate and want a small change that doesn’t alter how the app behaves.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">LLM providers</span><h4>Suppliers of every request</h4><p>Without their models there is no product. A price change, a limit on access or a competing feature from a large provider can change the conditions quickly. Using several providers reduces this dependence.</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Regulators</span><h4>GDPR and the EU AI Act</h4><p>They shape what data can pass through the product and how it can be stored. Where data is processed and whether it is stored affects both the design and customer trust.</p></div>
+        <div class="card reveal"><span class="tag">Competitors</span><h4>Routing and gateway providers</h4><p>They compete directly for the same customers, including large cloud providers that build routing into their own platforms.</p></div>
+        <div class="card reveal" style="--d:.06s"><span class="tag">Investors</span><h4>Not yet engaged</h4><p>Not involved at the pre-study stage, but they matter for whether the venture can grow beyond a prototype.</p></div>
       </div>
 
       <h3>What the interviews told us</h3>
       <div class="cards three">
-        <div class="card dk reveal"><span class="tag">Product development</span><h4>A founding engineer at Zaplar</h4><p>Routing fits best where one agent handles a mix of easy and hard tasks. But some features need fixed quality, so customers need a dial. That became λ.</p></div>
-        <div class="card dk reveal" style="--d:.06s"><span class="tag">Trust</span><h4>An operations specialist</h4><p>From an AI startup handling sensitive health data: work towards ISO certification, GDPR compliance, 30-day retention, EU hosting and encryption at rest.</p></div>
+        <div class="card dk reveal"><span class="tag">Product development</span><h4>A founding engineer at Zaplar</h4><p>Zaplar builds an agentic hotel system on LLM APIs. Routing fits best where one agent handles a mix of easy and hard tasks. But some features need fixed quality, so customers need a way to balance quality and price. That became λ.</p></div>
+        <div class="card dk reveal" style="--d:.06s"><span class="tag">Trust</span><h4>An operations specialist</h4><p>From an AI startup handling sensitive health data: work towards ISO certification, GDPR compliance, 30-day retention, EU hosting and encryption at rest. Also helped with the EU AI Act and a risk-assessment approach based on probability and impact.</p></div>
         <div class="card dk reveal" style="--d:.12s"><span class="tag">Customer insight</span><h4>A potential customer</h4><p>A B2B product with about ten business users would need roughly 100 million to 1 billion tokens per month. This sized the customer in the financial model.</p></div>
       </div>
     </section>
@@ -260,13 +262,13 @@
           </tbody>
         </table>
       </div>
-      <p class="reveal">This supports assumption A3: a practical router can cut cost substantially while keeping quality close to, or above, a strong model. <a href="index.html#results">Try the λ dial on the results chart →</a></p>
+      <p class="reveal">This supports assumption A3: a practical router can cut cost substantially while keeping quality close to, or above, a strong model. The results apply to the benchmark; savings and quality on customer traffic may differ with each application’s mix of tasks, costs and quality requirements. <a href="index.html#results">Try the λ dial on the results chart →</a></p>
     </section>
 
     <!-- 7 ITERATIONS -->
     <section class="ps-sec" id="iterations">
       <span class="eyebrow">07 · How we got there</span>
-      <h2 class="reveal">Four iterations, four lessons.</h2>
+      <h2 class="reveal">The earlier iterations, and what each one taught us.</h2>
       <h3>1. The topic router</h3>
       <p class="reveal">The first version classified prompts into four broad topics with Laya, an open ModernBERT-based classifier, and scored models with public Arena Elo and list prices. It reached 78.1% for $1.10, but sent 94% of prompts to one model, and knowing the true topic improved it by only 0.5 points.</p>
       <p class="lesson reveal"><b>Lesson:</b> the routing logic, not the classifier, was the limit. Four topics were too broad, the complexity score barely varied, and list prices predicted real cost poorly.</p>
@@ -277,7 +279,7 @@
       <p class="reveal">Real user prompts from the WildChat dataset look little like benchmark questions. Adding about 3,000 of them to the training data raised task-type accuracy on an everyday test set from 31% to 51%.</p>
       <p class="lesson reveal"><b>Lesson:</b> benchmark results are optimistic for real traffic, and data from real use is what improves the classifier most.</p>
       <h3>4. Closing the gap to the oracle</h3>
-      <p class="reveal">Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. What worked was checking the answer: if it is empty, cut off or fails a code example in the prompt, the request is sent once more to the next-best model. Those answers would almost always be graded wrong, so the retry mostly turns failures into passes. At λ = 20 it raised accuracy from 83.7% to 85.8%, at a cost of $1.58 instead of $0.91, and at most of the budgets tested it beat spending the same money on routing alone.</p>
+      <p class="reveal">With task types the router reached 84% against the oracle’s 94%. Two task types, algorithmic programming and business writing, account for 68% of that gap. Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. What worked was checking the answer: if it is empty, cut off or fails a code example in the prompt, the request is sent once more to the next-best model. Those answers would almost always be graded wrong, so the retry mostly turns failures into passes. At λ = 20 it raised accuracy from 83.7% to 85.8%, at a cost of $1.58 instead of $0.91, and at most of the budgets tested it beat spending the same money on routing alone.</p>
       <p class="lesson reveal"><b>Lesson:</b> most of the oracle’s lead cannot be predicted from the prompt alone. Checking the answer afterwards recovers part of it.</p>
     </section>
 
@@ -336,7 +338,7 @@
       <span class="eyebrow">10 · Roadmap</span>
       <h2 class="reveal">A plan of action, not a schedule.</h2>
       <ol class="steps-list">
-        <li class="reveal"><div><b>Find initial partners</b><span>AI-heavy companies such as Stockholm startups that rely on LLM APIs. Pilot partners pay only model costs, and share usage data and feedback in return.</span></div></li>
+        <li class="reveal"><div><b>Find initial partners</b><span>A small number of companies that rely on LLM APIs in their products, for example AI-heavy startups in Stockholm such as Legora or Lovable, or growing startups such as Zaplar. Pilot partners pay only model costs. In return they share usage data on agreed terms, give feedback and let Lönn name them as partners.</span></div></li>
         <li class="reveal"><div><b>Run pilots</b><span>Start in shadow mode, where the router only records what it would have chosen, then gradually take over real traffic.</span></div></li>
         <li class="reveal"><div><b>Prepare for launch</b><span>Build the pilot data and insights into the product. Partners move to standard pricing as the first paying customers.</span></div></li>
         <li class="reveal"><div><b>Go live</b><span>Any company can create an account, get a Lönn API key and route its requests. Break-even is the first commercial milestone.</span></div></li>
@@ -344,25 +346,23 @@
       </ol>
       <h3>Technical next steps</h3>
       <ul class="bullets">
-        <li class="reveal"><b>Model onboarding</b> without retraining, by learning model capability vectors from observed performance.</li>
-        <li class="reveal"><b>Evaluation</b> on broader, representative data and repeatable tests, including latency.</li>
-        <li class="reveal"><b>Trust and data handling</b> enforced across Lönn and downstream providers, with ongoing verification.</li>
-        <li class="reveal"><b>Reliable execution</b>: provider integrations, fallback and monitoring under real workloads.</li>
-        <li class="reveal"><b>Metering and billing</b> with current prices and prepaid balances to limit financial exposure.</li>
-        <li class="reveal"><b>Caching and session memory</b> across model switches, and <b>prompt and reasoning optimisation</b> to cut tokens further.</li>
+        <li class="reveal"><b>Model routing:</b> onboard new models without retraining the whole system, with capability vectors learned from observed performance.</li>
+        <li class="reveal"><b>Evaluation:</b> broader, representative data and repeatable tests of quality, total cost and latency.</li>
+        <li class="reveal"><b>Trust and data handling:</b> customer policies enforced across Lönn and downstream providers, with ongoing verification.</li>
+        <li class="reveal"><b>Reliable execution:</b> provider integrations, fallback and monitoring tested under realistic workloads.</li>
+        <li class="reveal"><b>Customer controls and integration:</b> the API, Python SDK and web app, connecting each request to its cost-quality preference and data policy.</li>
+        <li class="reveal"><b>Metering and billing:</b> accurate usage tracking, current prices, and prepaid balances or credit limits.</li>
+        <li class="reveal"><b>Caching and session memory:</b> how model switching affects caching and conversation context, and what that costs.</li>
+        <li class="reveal"><b>Prompt and reasoning optimisation:</b> prompt compression and reasoning limits to cut tokens, validated against answer quality.</li>
       </ul>
     </section>
 
-    <!-- 11 LIMITS -->
-    <section class="ps-sec" id="limits">
-      <span class="eyebrow">11 · Limitations</span>
-      <h2 class="reveal">What the results do and don’t show.</h2>
-      <ul class="bullets">
-        <li class="reveal">All results are measured on a 690-prompt benchmark, not real customer traffic. Savings and quality will depend on each application’s mix of tasks.</li>
-        <li class="reveal">The classifier is less accurate on everyday prompts than on benchmark questions, which is why real usage data is the first goal of the pilots.</li>
-        <li class="reveal">Data security, the dashboard, cost tracking and billing are designed but not implemented in the prototype.</li>
-        <li class="reveal">The profitability model rests on scenario assumptions about pricing, usage and costs.</li>
-      </ul>
+    <!-- 11 ABOUT -->
+    <section class="ps-sec" id="about">
+      <span class="eyebrow">11 · About the report</span>
+      <h2 class="reveal">How the report was made, and by whom.</h2>
+      <h3>Use of AI</h3>
+      <p class="reveal">AI was used in line with the course examiners’ guidelines, always as a tool with a human driving the work: to reformulate parts of the text for grammar and flow, to help build the Excel workbook for the financial model, and for coding.</p>
       <h3>The team</h3>
       <div class="team">
         <a href="mailto:jbrismar@kth.se">jbrismar@kth.se</a><a href="mailto:erikmall@kth.se">erikmall@kth.se</a><a href="mailto:spiik@kth.se">spiik@kth.se</a><a href="mailto:noaw@kth.se">noaw@kth.se</a><a href="mailto:hestra@kth.se">hestra@kth.se</a>
@@ -392,6 +392,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202611102012"></script>
+<script src="assets/js/main.js?v=202611102019"></script>
 </body>
 </html>
