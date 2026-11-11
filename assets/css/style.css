@@ -450,3 +450,5 @@ td:first-child{white-space:normal}
 @media (max-width:760px){table.tight th,table.tight td{padding:9px 5px;font-size:12px}table.tight th{font-size:9.5px;letter-spacing:0}table.tight td:first-child,table.tight th:first-child{padding-left:10px}table.tight td:last-child,table.tight th:last-child{padding-right:10px}}
 .ps-note{margin-top:28px;font-size:14.5px;color:var(--muted-dark)}
 .ps-note a{color:var(--signal);text-underline-offset:3px}
+.ps-pdf{margin-top:36px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.ps-pdf span{font-size:14.5px;color:var(--muted-dark)}
