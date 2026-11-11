@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=202611111758">
+<link rel="stylesheet" href="assets/css/style.css?v=202611111804">
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
@@ -35,9 +35,9 @@
 <section class="dark ps-hero">
   <div class="hero-glow"></div>
   <div class="wrap" style="position:relative;z-index:2">
-    <span class="eyebrow reveal">The pre-study</span>
+    <span class="eyebrow reveal">The pre-study · Cost, quality and trust in LLM routing</span>
     <h1 class="h-l reveal" style="--d:.06s">Can a router cut LLM costs <span class="g">without cutting quality?</span></h1>
-    <p class="q reveal" style="--d:.14s">What if companies could get the quality they need from AI without constantly deciding which model to use, and understand exactly where their money goes?</p>
+    <p class="q reveal" style="--d:.14s">The pre-study concludes that Lönn AI is feasible and commercially promising, and recommends pilots with partner companies, first in shadow mode, to validate savings on real traffic.</p>
     <div class="ps-meta reveal" style="--d:.22s">
       <div><b data-count="690">690</b>benchmark prompts</div>
       <div><b data-count="8">8</b>candidate models</div>
@@ -52,6 +52,7 @@
   <aside class="toc" aria-label="Contents">
     <div class="t">Contents</div>
     <ol>
+      <li><a href="#brief">In brief</a></li>
       <li><a href="#intro">Introduction</a></li>
       <li><a href="#method">Method</a></li>
       <li><a href="#assumptions">Assumptions</a></li>
@@ -67,6 +68,19 @@
   </aside>
 
   <main class="ps-content">
+
+    <!-- IN BRIEF -->
+    <section class="ps-sec" id="brief">
+      <span class="eyebrow">In brief</span>
+      <h2 class="reveal">The pre-study in five points.</h2>
+      <ul class="bullets">
+        <li class="reveal"><b>The problem is twofold.</b> Not every request needs the same capability, so a single model either wastes money on routine tasks or compromises demanding ones. And the total bill does not show which features or workflows generated the spending.</li>
+        <li class="reveal"><b>Lönn AI addresses both</b> as a single API layer between a company’s applications and its LLM providers. It identifies the type of task and sends each request to the model with the best balance of quality and cost, within the company’s data-handling requirements. One parameter, λ, sets how much quality to trade for lower cost.</li>
+        <li class="reveal"><b>On the benchmark it works.</b> At λ = 20 the Lönn Router answered 85.8% of 690 prompts correctly for 1.58 USD, against 88.1% for 7.58 USD when always using Claude Sonnet 5.5. At λ = 10 it reached 89.6% at about half the cost. On everyday prompts the classifier identified the task type for only 51%, so benchmark results are likely optimistic.</li>
+        <li class="reveal"><b>The business case holds on paper.</b> With a fee of 20% of the savings, a customer moving from Claude Sonnet 5.5 still cuts AI spend by about 63%, and Lönn AI covers its non-personnel operating costs at roughly two customers.</li>
+        <li class="reveal"><b>The requirements are partly met.</b> Cost and quality (R4) is partly met on the benchmark, reliability (R5) is not yet met, and the business and trust requirements are partly met. Cost tracking, billing and the data-handling safeguards were designed but not implemented.</li>
+      </ul>
+    </section>
 
     <!-- 1 INTRO -->
     <section class="ps-sec" id="intro">
@@ -95,19 +109,19 @@
       </div>
 
       <h3>Solution</h3>
-      <p class="reveal">Lönn AI sits between a company’s applications and its AI providers as a single API layer. It handles model selection and makes the resulting spending visible.</p>
+      <p class="reveal">Lönn AI aims to help companies get the quality they need from AI without selecting a model for every request, while giving them more visibility and control over their AI spending. The solution has two connected components.</p>
       <ul class="bullets">
-        <li class="reveal"><b>Routing.</b> Each task goes to a suitable model, based on the quality it requires, the cost of serving it and the company’s security and data-processing requirements. The choices stay aligned as models and prices change, without developers having to monitor the market by hand.</li>
-        <li class="reveal"><b>Cost tracking.</b> The same layer connects spending to the features, workflows and customer activities behind it. Developers see what their applications cost to run, and finance sees what drives expenditure.</li>
+        <li class="reveal"><b>An API-based routing system.</b> It sits between a company’s applications and its AI providers and automatically selects a suitable model for each request, based on estimated quality, cost and security requirements. The balance is kept as models and prices change, without developers having to keep reassessing alternatives.</li>
+        <li class="reveal"><b>A web application.</b> An interactive dashboard where companies monitor usage and spending, analyse routing decisions, compare available models and set preferences for quality, cost and security. The system is also designed to connect spending to the projects, applications and teams responsible for it.</li>
       </ul>
 
       <h3>Scope</h3>
-      <p class="reveal">The pre-study covers organisations that integrate hosted LLMs into their own products and workflows through token-billed APIs, not subscriptions to ready-made chat assistants such as ChatGPT or Microsoft Copilot. It evaluates technical, commercial and regulatory feasibility along two tracks. The intended product and the prototype are not identical.</p>
+      <p class="reveal">The pre-study is limited to the use of LLMs through APIs, where companies send requests from their own products, tools or workflows and pay per token. Subscriptions to chat assistants such as ChatGPT or Microsoft Copilot fall outside the scope. It has two aims.</p>
       <div class="cards">
-        <div class="card reveal"><span class="tag">Track 1 · Theoretical</span><h4>The intended product</h4><p>Defines and evaluates the full product from academic literature, provider documentation, participatory design interviews and financial modelling: the routing architecture, expenditure attribution and customer controls, data governance and the commercial model.</p></div>
-        <div class="card dk reveal" style="--d:.06s"><span class="tag">Track 2 · Empirical</span><h4>The prototype</h4><p>Tests whether automated model selection cuts cost while preserving answer quality. Every tested prompt needs paid API calls, so it is limited to the core routing mechanism, evaluated offline on a fixed benchmark with a limited pool of models.</p></div>
+        <div class="card reveal"><span class="tag">Aim 1 · Theoretical</span><h4>Can routing form a viable business?</h4><p>Analyse how LLM routing can reduce the cost of using LLMs while maintaining answer quality, and whether this can form the basis of a viable business.</p></div>
+        <div class="card dk reveal" style="--d:.06s"><span class="tag">Aim 2 · Prototype</span><h4>Can it be built?</h4><p>Build a prototype of the core routing mechanism: identify the type of task and choose a suitable model, within a pool of eight models. It was developed under financial constraints and evaluated in a controlled setting, not on real customer traffic.</p></div>
       </div>
-      <p class="reveal">Cost tracking, billing, data-security enforcement and prompt compression are not implemented in the prototype. They are covered conceptually in the product design and in the roadmap.</p>
+      <p class="reveal">Prompt compression, cost tracking and billing fall outside the prototype, and data security is treated only theoretically. Their future development is described in the roadmap.</p>
     </section>
 
     <!-- 2 METHOD -->
@@ -116,14 +130,14 @@
       <h2 class="reveal">An iterative feasibility study, with one method per assumption.</h2>
       <p class="reveal">The team listed the technical, business and trust assumptions the service depends on and chose a way to test each. Findings from one activity fed the next: stakeholder feedback shaped which routing decisions customers control, prototype comparisons guided the routing logic, and the measured cost difference fed the financial model.</p>
       <div class="cards">
-        <div class="card reveal"><span class="tag">Literature &amp; market</span><h4>Routing research and competitors</h4><p>Do models succeed on different requests, can a router predict which one to use, and can new models be added without retraining? Competitors compared by customers, routing, controls and pricing. Provider documentation reviewed for processing location, retention and training use.</p></div>
+        <div class="card reveal"><span class="tag">Literature &amp; market</span><h4>Routing research and competitors</h4><p>Do models succeed on different requests, can a router predict which one to use, and can new models be added without retraining? Competitors grouped by product focus and deployment model. Provider documentation reviewed for processing location, retention and training use.</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">Participatory design</span><h4>Three consultations</h4><p>A founding engineer at a YC-backed startup, an operations specialist in sensitive data handling, and a potential customer on expected token volumes.</p></div>
         <div class="card reveal"><span class="tag">Prototype</span><h4>Benchmark evaluation</h4><p>Routing strategies replayed against stored outputs from every model, so versions can be compared on identical requests with a known grade and cost.</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">Financial</span><h4>Profitability model</h4><p>Gross savings from the benchmark, the proposed fee, variable and fixed costs, and break-even expressed in customers.</p></div>
       </div>
 
       <h3>The benchmark</h3>
-      <p class="reveal">690 prompts across five task families: maths (MATH-500), programming (HumanEval+, MBPP+, LiveCodeBench), knowledge (MMLU-Pro, GPQA Diamond, ARC-Challenge), instruction following (IFEval) and business writing (WritingBench). Each of the eight models answered every prompt once, giving 5,520 outputs, each stored with its grade and billed cost, including reasoning tokens. Grading used reference answers, executable tests, rule-based checks or an LLM judge with the WritingBench rubric, depending on the task.</p>
+      <p class="reveal">690 prompts across five task families: 150 in mathematics (MATH-500), 200 in programming (HumanEval+, MBPP+, LiveCodeBench), 200 in knowledge (MMLU-Pro, GPQA Diamond, ARC-Challenge), 80 in instruction following (IFEval) and 60 in business writing (WritingBench), sampled with a fixed random seed. Each of the eight models answered every prompt once, giving 5,520 outputs, each stored with its grade and billed cost, including reasoning tokens. Grading used reference answers, executable tests, rule-based checks or an LLM judge with the WritingBench rubric, depending on the task.</p>
       <div class="table-wrap reveal">
         <table>
           <thead><tr><th>Model</th><th class="num">Output price (USD / M tokens)</th><th class="num">Correct (excl. writing)</th><th class="num">Billed cost, 690 prompts</th></tr></thead>
@@ -175,7 +189,7 @@
           <p style="margin-top:10px"><b>R6–R7</b> Settings for processing location, retention and training use, including zero data retention; security controls, agreements and documented procedures.</p>
         </div>
       </div>
-      <p class="reveal">On trust, Lönn matches each customer’s settings against verified provider endpoint conditions to decide which models are eligible for a request, and re-checks those conditions periodically and after relevant changes. ISO/IEC 27001 certification is optional, so the initial approach relies on documented controls, processing agreements and implementation evidence. Whether customers accept this level of assurance is still an assumption to validate.</p>
+      <p class="reveal">On trust, Lönn is designed to match each customer’s settings against verified provider endpoint conditions to decide which models are eligible for a request, and to re-check those conditions periodically and after relevant changes. ISO/IEC 27001 certification is optional, so the initial approach relies on documented controls, processing agreements and implementation evidence. Whether customers accept this level of assurance is still an assumption to validate.</p>
     </section>
 
     <!-- 4 MARKET -->
@@ -192,7 +206,7 @@
         <table class="wraptable">
           <thead><tr><th>Segment</th><th>What it is</th><th>Key competitors</th></tr></thead>
           <tbody>
-            <tr class="hl"><td>Multi-model routing platforms<br><span class="pill">Lönn’s segment</span></td><td class="wrapcell">One API to many models, routing on quality, cost, latency and availability</td><td class="wrapcell">OpenRouter, Martian, MegaRouter, Requesty, Not Diamond, Vercel AI Gateway, Hugging Face, Eden AI</td></tr>
+            <tr class="hl"><td>Multi-model routing platforms<br><span class="pill">Lönn’s segment</span></td><td class="wrapcell">One API to many models, routing on quality, cost, latency and availability</td><td class="wrapcell">OpenRouter, Martian, MegaRouter, Requesty, Not Diamond, Vercel AI Gateway, Eden AI</td></tr>
             <tr><td>Enterprise AI gateways</td><td class="wrapcell">Central control of AI traffic: governance, security, budgets, observability</td><td class="wrapcell">Portkey, TrueFoundry, Cloudflare AI Gateway</td></tr>
             <tr><td>Self-hostable AI gateways</td><td class="wrapcell">Gateway software running in the customer’s own infrastructure</td><td class="wrapcell">LiteLLM, Kong AI Gateway, Helicone, Bifrost</td></tr>
             <tr><td>Cloud-native AI routing</td><td class="wrapcell">Routing built into a hyperscaler environment</td><td class="wrapcell">Microsoft Foundry, AWS Bedrock, Google Vertex AI, Oracle OCI</td></tr>
@@ -201,7 +215,7 @@
       </div>
       <p class="reveal">Lönn mainly targets the multi-model routing segment. The adjacent segments still matter: as cloud platforms and enterprise gateways add models and routing features, they could overlap more with it.</p>
       <h3>Positioning</h3>
-      <p class="reveal">Lönn should be positioned between the broad model access of platforms such as OpenRouter and the more intelligence-driven routing of companies such as Martian. The aim is not to compete on the number of models and providers, but to make better decisions across a diverse and complementary set of them, with cost-efficient inference that keeps output quality. As a dynamic optimisation layer that keeps adjusting as prices and models change, it can also give customers more stable quality and more predictable spending.</p>
+      <p class="reveal">Lönn should be positioned between the broad model access of platforms such as OpenRouter and the more intelligence-driven routing of companies such as Martian. The aim is not to compete on the number of models and providers, but to make better decisions across a diverse and complementary set of them, with cost-efficient model selection that keeps output quality. The web application is a second part of the differentiation: its dashboard and data-handling settings give customers visibility and control alongside the routing. As a dynamic optimisation layer that keeps adjusting as prices and models change, it can also give customers more stable quality and more predictable spending.</p>
     </section>
 
     <!-- 5 STAKEHOLDERS -->
@@ -211,7 +225,7 @@
       <div class="cards three">
         <div class="card reveal"><span class="tag">Customers</span><h4>Two roles in one company</h4><p>Companies that use LLM provider APIs and pay for the tokens. Leadership or the budget owner (a CTO or head of engineering) decides and wants lower, more predictable cost with maintained quality. Developers integrate and want a small change that doesn’t alter how the app behaves.</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">LLM providers</span><h4>Suppliers of every request</h4><p>Without their models there is no product. A price change, a limit on access or a competing feature from a large provider can change the conditions quickly. Using several providers reduces this dependence.</p></div>
-        <div class="card reveal" style="--d:.12s"><span class="tag">Regulators</span><h4>GDPR and the EU AI Act</h4><p>They shape what data can pass through the product and how it can be stored. Where data is processed and whether it is stored affects both the design and customer trust.</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Regulators</span><h4>GDPR and the EU AI Act</h4><p>They shape what data can pass through the product and how it can be stored. Where data is processed and whether it is stored affects both the design and customer trust. The rules are enforced by national data protection authorities (in Sweden, IMY) and, for the AI Act, by market surveillance authorities and the EU AI Office.</p></div>
         <div class="card reveal"><span class="tag">Competitors</span><h4>Routing and gateway providers</h4><p>They compete directly for the same customers, including large cloud providers that build routing into their own platforms.</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">Investors</span><h4>Not yet engaged</h4><p>Not involved at the pre-study stage, but they matter for whether the venture can grow beyond a prototype.</p></div>
       </div>
@@ -231,7 +245,7 @@
 
       <h3>Evidence from the routing literature</h3>
       <ul class="bullets">
-        <li class="reveal"><b>Models succeed on different tasks.</b> Across 21 LLMs and 16 benchmarks, an oracle that always picks the right model scored 88% on average, against 82.4% for the strongest fixed model. When it only had to match that model’s score, it cut token costs by 85.2% on average (Fowler et al., 2026).</li>
+        <li class="reveal"><b>Models succeed on different tasks.</b> Across 21 LLMs and 16 benchmarks, an oracle that always picks the right model scored 88.8% on average, against 82.4% for the strongest fixed model. When it only had to match that model’s score, it cut token costs by 85.2% on average (Fowler et al., 2026).</li>
         <li class="reveal"><b>The differences are predictable.</b> RouteLLM kept 95% of GPT-4’s MT-Bench score at an estimated 73% lower cost, with routing overhead of at most 0.4% (Ong et al., 2025).</li>
         <li class="reveal"><b>Routing can beat the best model.</b> Avengers-Pro matched GPT-5’s accuracy at 31.7% lower cost, or reached 4.0% higher accuracy in a quality-first setting (Li et al., 2026).</li>
         <li class="reveal"><b>New models can be added.</b> ZeroRouter routes to models outside its training pool, so the pool can be updated without retraining (Yan et al., 2026).</li>
@@ -279,7 +293,7 @@
       <p class="reveal">Real user prompts from the WildChat dataset look little like benchmark questions. Adding about 3,000 of them to the training data raised task-type accuracy on an everyday test set from 31% to 51%.</p>
       <p class="lesson reveal"><b>Lesson:</b> benchmark results are optimistic for real traffic, and data from real use is what improves the classifier most.</p>
       <h3>4. Closing the gap to the oracle</h3>
-      <p class="reveal">With task types the router reached 84% against the oracle’s 94%. Two task types, algorithmic programming and business writing, account for 68% of that gap. Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. What worked was checking the answer: if it is empty, cut off or fails a code example in the prompt, the request is sent once more to the next-best model. Those answers would almost always be graded wrong, so the retry mostly turns failures into passes. At λ = 20 it raised accuracy from 83.7% to 85.8%, at a cost of $1.58 instead of $0.91, and at most of the budgets tested it beat spending the same money on routing alone.</p>
+      <p class="reveal">With task types the router reached 84% against the oracle’s 94%. Two task types, algorithmic programming and business writing, account for 68% of that gap. Predicted complexity, agreement between two cheap models and a cheap writing judge were all tested and dropped. What worked was checking the answer: if it is empty, cut off or fails a code example in the prompt, the request is sent once more to the next-best model. Those answers would almost always be graded wrong, so the retry mostly turns failures into passes. At λ = 20 it raised accuracy from 83.7% to 85.8%, at a cost of $1.58 instead of $0.91, and it beat spending the same money on routing alone at five of the six budgets tested, by up to 1.7 points.</p>
       <p class="lesson reveal"><b>Lesson:</b> most of the oracle’s lead cannot be predicted from the prompt alone. Checking the answer afterwards recovers part of it.</p>
     </section>
 
@@ -291,12 +305,12 @@
       <div class="cards four">
         <div class="card reveal"><span class="tag">Fee</span><h4 style="font-size:30px" data-count="20" data-suf="%">20%</h4><p>of the customer’s savings</p></div>
         <div class="card reveal" style="--d:.06s"><span class="tag">Contribution margin</span><h4 style="font-size:30px" data-count="93.8" data-dec="1" data-suf="%">93.8%</h4><p>after payment and conversion fees</p></div>
-        <div class="card reveal" style="--d:.12s"><span class="tag">Fixed costs</span><h4 style="font-size:30px">$421<small style="font-size:15px;font-weight:500">/mo</small></h4><p>hosting, tools and admin, plus $241 one-time</p></div>
+        <div class="card reveal" style="--d:.12s"><span class="tag">Fixed costs</span><h4 style="font-size:30px">$421<small style="font-size:15px;font-weight:500">/mo</small></h4><p>hosting, tools and admin, excluding salaries, plus $241 one-time</p></div>
         <div class="card dk reveal" style="--d:.18s"><span class="tag">Break-even</span><h4 style="font-size:30px">≈ 2</h4><p>customers of the interviewed size</p></div>
       </div>
       <ul class="bullets">
-        <li class="reveal"><b>For the customer:</b> at λ = 20, AI spend falls by 63.3% after the service fee, for the assumed typical customer.</li>
-        <li class="reveal"><b>For Lönn:</b> the fee gives 0.759 USD of income per USD routed, and 0.713 USD after variable costs. Break-even is at 592 USD of routed AI spend per month.</li>
+        <li class="reveal"><b>For the customer:</b> on the benchmark, always using Sonnet costs 7.58 USD. With Lönn at λ = 20 the customer pays 2.78 USD (1.58 to providers and a 1.20 fee) and keeps 4.80 USD, a 63.3% lower AI spend.</li>
+        <li class="reveal"><b>For Lönn:</b> the fee gives 0.759 USD of income per USD routed, and 0.713 USD after variable costs. Break-even on non-personnel operating costs is at 592 USD of routed AI spend per month, about 1.4 case customers of 417 USD each.</li>
       </ul>
     </section>
 
@@ -310,27 +324,43 @@
           <span class="tag">Business · R1–R3</span>
           <h4>Partially met</h4>
           <p>On the benchmark the router gives clear financial value: 63.3% lower AI spend after the fee at λ = 20. The 20% fee with prepaid credits reaches profitability at about two typical customers and removes most credit risk. λ gives control, and the dashboard is designed to give visibility.</p>
-          <p style="margin-top:10px"><b>Why only partially:</b> the evidence is a benchmark and single interviews. No customer has yet been asked whether they would pay the fee, and savings depend on each customer’s mix of tasks.</p>
+          <p style="margin-top:10px"><b>Why only partially:</b> the evidence is a benchmark and individual interviews. No customer has yet been asked whether they would accept the fee, and savings depend on each customer’s mix of tasks.</p>
         </div>
         <div class="card reveal" style="--d:.06s">
           <span class="tag">Technical · R4–R5</span>
-          <h4>Met on the benchmark</h4>
-          <p>About 97% of Sonnet’s accuracy at about a fifth of its cost at λ = 20, and higher accuracy at about half the cost at λ = 10. The classifier takes 34 ms, so the router’s own overhead is negligible. The prototype falls back when a provider call fails, and the routing table can be rebuilt when prices change.</p>
-          <p style="margin-top:10px"><b>Reservations:</b> only 690 prompts with one stored answer per model, and exam-style questions rather than real customer prompts. A new model must run the full benchmark, and fallback is untested under realistic load.</p>
+          <h4>R4 partly met on the benchmark, R5 not yet met</h4>
+          <p><b>R4:</b> about 97% of Sonnet’s accuracy at about a fifth of its cost at λ = 20, and higher accuracy at about half the cost at λ = 10. The classifier takes 34 ms, small compared with typical model response times. End-to-end latency, including the extra call for the 8% of requests that are escalated, was not measured, and neither was integration effort.</p>
+          <p style="margin-top:10px"><b>R5:</b> the prototype falls back when a provider call fails and the routing table can be rebuilt when prices change, but a new model must run the full benchmark and fallback is untested under realistic load.</p>
         </div>
         <div class="card reveal" style="--d:.12s">
           <span class="tag">Trust and safety · R6–R7</span>
-          <h4>Planned, not yet built</h4>
-          <p>The data-handling settings, security controls and documentation were discussed and planned with an operations specialist at an AI startup that handles sensitive health data, but not developed in practice. Building them is a roadmap item.</p>
-          <p style="margin-top:10px"><b>Priorities named:</b> EU hosting, GDPR compliance, encryption, a 30-day retention limit and working towards ISO certification.</p>
+          <h4>Partially met</h4>
+          <p>The policies and documentation were discussed and planned with the operations specialist but not developed in practice, so they become a roadmap item. R6 is supported in theory but not validated. R7 is judged feasible but has not been tested.</p>
+          <p style="margin-top:10px">Under the GDPR, Lönn AI would act as a data processor with the model providers as sub-processors. Routing to providers outside the EU would need a legal basis for international transfers, or those providers must be excluded from EU-only policies.</p>
         </div>
       </div>
-      <h3>Two risks the discussion raises</h3>
+      <h3>Three reservations about the benchmark result</h3>
+      <ul class="bullets">
+        <li class="reveal"><b>A small dataset.</b> 690 prompts with one stored answer per model. A larger dataset would allow more certain statements.</li>
+        <li class="reveal"><b>Exam-style questions.</b> They differ from the prompts customers send. On everyday WildChat prompts the classifier identified the correct task type for only 51%.</li>
+        <li class="reveal"><b>Tuned on the same benchmark.</b> The task types, the answer check and the λ values were chosen on the benchmark that produced the results.</li>
+      </ul>
+      <p class="reveal">Even so, the cost difference compared with always using Sonnet is large across the whole range of λ, which suggests that substantial savings are likely on real traffic. Their size remains to be shown in the pilots.</p>
+      <h3>Two risks</h3>
       <ul class="bullets">
         <li class="reveal"><b>Supplier risk.</b> With Lönn the provider becomes interchangeable, and the customer may not know which model answered. A provider that sees this as lost brand recognition or customer relationships can raise prices or restrict access, as when Anthropic cut Windsurf’s access to Claude in 2025 (Zeff, 2025). A pool spread across several providers reduces the risk, but losing the strongest models would lower the value of the whole product.</li>
         <li class="reveal"><b>Security against savings.</b> Stricter data-processing requirements leave fewer eligible providers, and several of the cheaper models may be excluded. Customers with very strict requirements may save much less than the benchmark suggests.</li>
       </ul>
-      <p class="reveal">Even with these reservations, the gap to always using Sonnet is large across the whole range of λ, which the report takes as a strong signal that the technical requirements can be met in practice.</p>
+      <h3>Limitations</h3>
+      <ul class="bullets">
+        <li class="reveal">With 690 exam-style prompts and one stored answer per model, small differences between configurations are uncertain.</li>
+        <li class="reveal">The writing tasks were graded by an LLM judge, which may favour some models.</li>
+        <li class="reveal">The oracle is an optimistic upper bound, because it benefits from answers that were correct by chance.</li>
+        <li class="reveal">The participatory design evidence comes from three individual interviews.</li>
+        <li class="reveal">The data-handling safeguards, cost attribution and dashboard are designs that have not yet been implemented or tested.</li>
+      </ul>
+      <h3>Final remarks</h3>
+      <p class="reveal">On the benchmark, the pre-study gives a clear answer: routing lowers the cost of LLM use while keeping answer quality close to that of a strong model, the prototype shows that the approach can be implemented, and the business can cover its non-personnel operating costs with a few customers. What remains is to show the same on real customer traffic, and the roadmap sets out how Lönn AI will get there.</p>
     </section>
 
     <!-- 10 ROADMAP -->
@@ -341,7 +371,7 @@
         <li class="reveal"><div><b>Find initial partners</b><span>A small number of companies that rely on LLM APIs in their products, for example AI-heavy startups in Stockholm such as Legora or Lovable, or growing startups such as Zaplar. Pilot partners pay only model costs. In return they share usage data on agreed terms, give feedback and let Lönn name them as partners.</span></div></li>
         <li class="reveal"><div><b>Run pilots</b><span>Start in shadow mode, where the router only records what it would have chosen, then gradually take over real traffic.</span></div></li>
         <li class="reveal"><div><b>Prepare for launch</b><span>Build the pilot data and insights into the product. Partners move to standard pricing as the first paying customers.</span></div></li>
-        <li class="reveal"><div><b>Go live</b><span>Any company can create an account, get a Lönn API key and route its requests. Break-even is the first commercial milestone.</span></div></li>
+        <li class="reveal"><div><b>Go live</b><span>Any company can create an account, get a Lönn API key and route its requests.</span></div></li>
         <li class="reveal"><div><b>Grow after launch</b><span>Use partners as references and growing usage data to keep improving the router.</span></div></li>
       </ol>
       <h3>Technical next steps</h3>
@@ -363,9 +393,11 @@
       <h2 class="reveal">How the report was made, and by whom.</h2>
       <h3>Use of AI</h3>
       <p class="reveal">AI was used in line with the course examiners’ guidelines, always as a tool with a human driving the work: to reformulate parts of the text for grammar and flow, to help build the Excel workbook for the financial model, and for coding.</p>
+      <h3>The report</h3>
+      <p class="reveal">“Lönn AI: Cost, quality and trust in LLM routing” is a pre-study written in the course DH2465 Computer Science, Business and Management at KTH Royal Institute of Technology, dated 11 November 2026. The source code is at <a href="https://github.com/emrailklmin/Lonn">github.com/emrailklmin/Lonn</a>.</p>
       <h3>The team</h3>
       <div class="team">
-        <a href="mailto:jbrismar@kth.se">jbrismar@kth.se</a><a href="mailto:erikmall@kth.se">erikmall@kth.se</a><a href="mailto:spiik@kth.se">spiik@kth.se</a><a href="mailto:noaw@kth.se">noaw@kth.se</a><a href="mailto:hestra@kth.se">hestra@kth.se</a>
+        <a href="mailto:jbrismar@kth.se">Joel Brismar</a><a href="mailto:erikmall@kth.se">Erik Mallmin</a><a href="mailto:spiik@kth.se">William Spiik</a><a href="mailto:hestra@kth.se">Henrik Strand</a><a href="mailto:noaw@kth.se">Noa Westerlund</a>
       </div>
     </section>
   </main>
@@ -392,6 +424,6 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=202611111758"></script>
+<script src="assets/js/main.js?v=202611111804"></script>
 </body>
 </html>
