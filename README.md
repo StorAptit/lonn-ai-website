@@ -13,6 +13,7 @@ prestudy.html
 assets/css/style.css     all styling (colours are at the top)
 assets/js/main.js        scroll effects, route animation, chart, λ dial
 assets/img/              logos, favicon, video poster
+Lonn_AI_Prestudy.pdf     the full pre-study report, linked from prestudy.html
 videos/routing.mp4       the routing walkthrough (taken from the pitch deck)
 videos/dashboard.mp4     the dashboard demo video
 .nojekyll                tells GitHub Pages to serve files as they are
