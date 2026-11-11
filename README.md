@@ -14,23 +14,19 @@ assets/css/style.css     all styling (colours are at the top)
 assets/js/main.js        scroll effects, route animation, chart, λ dial
 assets/img/              logos, favicon, video poster
 videos/routing.mp4       the routing walkthrough (taken from the pitch deck)
-videos/dashboard.mp4     ← ADD THIS (the dashboard demo video)
+videos/dashboard.mp4     the dashboard demo video
 .nojekyll                tells GitHub Pages to serve files as they are
 ```
 
-## Add the dashboard video
+## Replacing a video
 
-Save it as `videos/dashboard.mp4`. Until the file exists, the page shows a "coming soon" placeholder.
-
-GitHub refuses files over 100 MB, and smaller files load faster. If the video is large, compress it, for example with HandBrake (preset "Fast 1080p30") or with ffmpeg:
+Both videos are MP4 files in `videos/`. To replace one, save the new file under the same name. GitHub refuses files over 100 MB, and smaller files load faster, so compress large videos first, for example with HandBrake or ffmpeg:
 
 ```
-ffmpeg -i dashboard-original.mp4 -c:v libx264 -crf 26 -preset veryfast -c:a aac -b:a 128k -movflags +faststart videos/dashboard.mp4
+ffmpeg -i original.mov -c:v libx264 -crf 23 -c:a aac -b:a 128k -movflags +faststart videos/dashboard.mp4
 ```
 
-`+faststart` lets the video start playing before it has fully downloaded.
-
-Optional: add a poster image (a still frame shown before play) by putting `poster="assets/img/dashboard-poster.jpg"` on the dashboard `<video>` tag in `index.html`.
+`+faststart` lets the video start playing before it has fully downloaded. The still image shown before play is set with `poster="..."` on each `<video>` tag in `index.html`.
 
 ## Publish on GitHub Pages (free)
 
