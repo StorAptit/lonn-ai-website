@@ -452,3 +452,5 @@ td:first-child{white-space:normal}
 .ps-note a{color:var(--signal);text-underline-offset:3px}
 .ps-pdf{margin-top:36px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .ps-pdf span{font-size:14.5px;color:var(--muted-dark)}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;flex:0 1 auto;max-width:100%}
+.ps-pdf span{flex-basis:100%}
